@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="Div">
+
+    </div>
+
+    <script>
+        var list =
+            [
+                {
+                    name:"东北",
+                    child:[
+                        {
+                            name:"黑龙江",
+                            child:[
+                                {
+                                    name:"大庆",
+                                    child:[
+                                        {
+                                            name:'大兴安岭'
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name:"西北",
+                    child:[
+                        {
+                            name:"西藏",
+
+                        }
+                    ]
+                },
+                {
+                    name:"西南",
+                    child:[
+                        {
+                            name:"云南",
+
+                        }
+                    ]
+                },
+                {
+                    name:"东南",
+                    child:[
+                        {
+                            name:"福建",
+                            child:[
+                                {
+                                    name:"泉州",
+                                    child:[
+                                        {
+                                            name:"厦门",
+                                            child:[{name:"东土大唐"}]
+                                        }
+                                    ]
+                                },   
+                            ]
+                           
+                        }
+                    ]
+                },
+               
+            ]
+        
+
+        function tree(list){
+
+            var str ="<ul>";
+            for(var i=0;i<list.length;i++){
+                str+="<li>"+list[i].name
+                if(list[i].child){
+                    str+=tree(list[i].child)
+                }
+                str+="</li>"
+            }
+            str+="</ul>"  
+            return str 
+        }
+        document.getElementById("Div").innerHTML =tree(list)
+    </script>
+</body>
+</html>

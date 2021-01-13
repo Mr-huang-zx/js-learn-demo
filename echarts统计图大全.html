@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 双线图 -->
+    <div id="countEcharts" style="width: 400px; height: 400px;"></div>
+
+    <script src="./js/Echarts.js"></script>
+
+    <script>
+        //双线图
+        var getAgreeMyChart = echarts.init(document.getElementById("countEcharts"));
+        option_count = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            color: ['#AF6EFF', '#3CDFDE'],
+            // icon: "circle",
+            legend: {
+                // x: '200px',
+                // y: '10px',
+                data: [{
+                        name: '已支付金额',
+                        textStyle: {
+                            color: "#AF6EFF"
+                        }
+                    },
+                    {
+                        name: '未支付金额',
+                        textStyle: {
+                            color: "#3CDFDE"
+                        }
+                    }
+                ],
+                padding: [30, 0, 0, 0],
+                textStyle: {
+                    fontSize: 14, //字体大小
+                    // color: '#BBF6FF', //字体颜色
+
+                },
+
+            },
+            grid: {
+                left: '0px',
+                // right: '0px',
+                bottom: '0px',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                name: '月度',
+                nameGap: '15',
+                nameTextStyle: {
+                    color: "#474747",
+                    fontSize: 12,
+                    padding: [26, 0, 0, 10] //单位的颜色
+                },
+                show: true,
+                boundaryGap: false,
+                axisLabel: {
+                    textStyle: {
+                        color: '#474747', //x轴字体颜色
+                        padding: [10, 0, 0, 0]
+                    }
+                },
+
+                splitArea: {
+                    show: false,
+                },
+                splitLine: { //网格
+                    show: false,
+                },
+                axisTick: { //刻度线
+                    show: false
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#dfdfdf',
+                        width: 2,
+                    },
+                    // symbol: ['none', 'arrow']
+                },
+                data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+            },
+            yAxis: {
+                type: 'value',
+                name: '数量',
+                nameTextStyle: {
+                    color: "#474747",
+                    fontSize: 12,
+                    padding: [0, 20, 0, 0]
+                },
+                show: true,
+                min: 0, //y轴的最小值
+                max: 150, //y轴最大值 
+                interval: 25, //值之间的间隔},
+                name: "万元",
+
+                axisLabel: { //y轴字颜色
+                    textStyle: {
+                        color: '#474747'
+                    }
+                },
+                splitArea: {
+                    show: false,
+                    lineStyle: {
+                        color: ['red'],
+                        width: 1,
+                        type: 'solid'
+                    }
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: { //线颜色
+                        color: '#dfdfdf',
+                        width: 1,
+                    },
+                },
+                axisLine: {
+                    lineStyle: { //线颜色
+                        color: '#bebebe',
+                        width: 1,
+                    },
+                    // symbol: ['none', 'arrow']
+                },
+                axisTick: { //刻度线
+                    show: false
+                }
+            },
+            series: [{
+                    name: '已支付金额',
+                    type: 'line',
+                    smooth: true,
+                    lineStyle: {
+                        normal: {
+                            color: '#AF6EFF',
+                            width: 2
+                        }
+                    },
+                    areaStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                                offset: 0,
+                                color: '#af6eff2e'
+                            }, {
+                                offset: 1,
+                                color: '#D6E1FC'
+                            }]),
+                        },
+                    },
+                    smooth: true, //设置曲线是否平滑
+                    // symbol:"none", // 是否显示节点
+                    // stack:"金额",
+                    // areaStyle: {
+                    //     opacity:0.3
+                    // },
+                    data: [4, 10, 40, 60, 100, 120, 140, 150, 130, 100, 60, 30, 20]
+                },
+                {
+                    name: '未支付金额',
+                    type: 'line',
+                    smooth: true,
+                    lineStyle: {
+                        normal: {
+                            color: '#3CDFDE',
+                            width: 2
+                        }
+                    },
+                    areaStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                                offset: 0,
+                                color: '#E1F8F52e'
+                            }, {
+                                offset: 1,
+                                color: '#E1F8F5'
+                            }]),
+                        },
+                    },
+                    smooth: true, //设置曲线是否平滑
+                    // areaStyle: {
+                    //     opacity:0.5
+                    // },
+                    // symbolSize:10,  // 设置节点大小
+                    // symbol:"circle"  // 设置节点样式  
+                    // stack:"金额",
+                    data: [3, 8, 30, 50, 110, 100, 80, 100, 120, 90, 60, 20, 10]
+                }
+            ]
+        };
+        getAgreeMyChart.setOption(option_count);
+        //////////////////////////////////////////////
+    </script>
+</body>
+
+</html>

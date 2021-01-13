@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        function getNum(n){
+            if(n>0){
+                return n+getNum(n-1)
+            }
+            return 0
+        }
+
+        getNum(3)
+        //执行过程
+        getNum(3) `成立 3+ getNum(3-1)`  
+        getNum(2) `成立 2+ getNum(2-1)`  
+        getNum(1) `成立 1+ getNum(1-1)`  
+
+        `如果最后没有返回值 结果就是3+2+1+  这是个NAN`
+
+        getNum(0) `不成立 所以一定要有个判断`
+
+        //////////////////////////////////////////////////////////////////////////////////////
+        `递归`
+        var list =
+            [{
+                    name:"东北",
+                    child:[
+                        {
+                            name:"黑龙江",
+                            child:[
+                                {
+                                    name:"大庆",
+                                    child:[
+                                        {
+                                            name:'大兴安岭'
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name:"西北",
+                    child:[
+                        {
+                            name:"西藏",
+
+                        }
+                    ]
+                },
+                {
+                    name:"西南",
+                    child:[
+                        {
+                            name:"云南",
+
+                        }
+                    ]
+                },
+                {
+                    name:"东南",
+                    child:[
+                        {
+                            name:"福建",
+                            child:[
+                                {
+                                    name:"泉州",
+                                    child:[
+                                        {
+                                            name:"厦门",
+                                            child:[{name:"东土大唐"}]
+                                        }
+                                    ]
+                                },   
+                            ]
+                           
+                        }
+                    ]
+                },
+               
+            ]
+        
+
+        function tree(list){
+
+            var str ="<ul>";
+            for(var i=0;i<list.length;i++){
+                str+="<li>"+list[i].name
+                if(list[i].child){
+                    str+=tree(list[i].child)
+                }
+                str+="</li>"
+            }
+            str+="</ul>"  
+            return str 
+        }
+        document.getElementById("Div").innerHTML =tree(list)  
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        `闭包:很多高级应用都要依靠闭包来实现
+        javascript特色:函数内部可以直接读取全局变量，但是在函数外部无法读取函数内部的局部变量
+        闭包可以简单地理解成"定义在一个函数内部的函数"
+        闭包是将函数内部和函数外部连接起来的桥梁
+
+        外部函数读取函数内部的局部变量 的方法，就是在函数的内部再定义一个函数 也可以return
+        `
+        //01 return
+        function geta(){
+            a =10
+            return a
+        }
+        geta()
+
+        //02.在该函数内部再定义一个函数
+        function geta2(){
+            a =20;
+            function getA(){
+                console.log(a)
+            }
+            getA()
+        }
+        geta2()
+
+        `return 和 定义一个函数的区别 原因
+        ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+        因为函数的生命周期是从创建到调用，调用完之后会被回收，销毁，销毁后里面的局部变量就被销毁
+        局部变量是无法共享和长久的保存，
+        而全局变量可能造成污染，
+        当我们希望有一种机制既可以长久的保存变量又不会造成全局污染，就出现了闭包
+
+        // 但是可能会造成内存泄漏
+
+        局部变量没有被存储例如
+        `
+        function isa(){
+            a=10;
+            a++
+            return a
+        }
+        isa()  //第一次调用 a =11
+        isa()  //第二次调用 a依旧是 =11  因为调用后局部变量a立马被销毁 ，再次调用时再创建了个a=10
+
+        `闭包`
+        function aaa(){
+            a = 10;
+            function f1(){
+                a++
+            }
+            return f1;
+        }
+        //第二种匿名函数写法
+        function aaa(){
+            a = 10;
+            return function(){
+                a++
+            }
+      
+        }
+        var a22 =aaa()  //a22就是一个闭包  之所以闭包里面的变量一直存在 ，是因为把闭包赋值给了一个全局变量，导致f1不会被回收    
+        a22() //此时调用的是f1
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        `闭包用法`
+
+        function Person(){
+            var name ="小白"
+            return{
+                getname:function(){
+                    return name
+                },
+                changename:function(newname){
+                    name =newname
+                },
+            }
+        }
+        var geet =Person();
+        geet.getname()
+
+        //另一种写法
+        var geet =function(){
+            var name ="小白"
+            return{
+                getname:function(){
+                    return name
+                },
+                changename:function(newname){
+                    name =newname
+                },
+            }
+        }()
+        geet.getname()
+    </script>
+</body>
+</html>

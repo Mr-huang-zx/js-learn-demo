@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="ipt">
+    输出结果<span id="spa"></span>
+    <script>
+        var ipt =document.querySelector("#ipt")
+        var spa =document.querySelector("#spa")
+        // 代理模式proxy的作用
+        // 01.拦截和监视外部对对象的访问
+        // 02.降低函数或类的复杂度
+        // 03.在复杂操作前对操作进行效验或对所需资源进行管理
+        // var p =new Proxy(target,handler)   
+        //生成p实例 target 是拦截的目标对象  handler是用来拦截的行为 
+
+        var target ={
+            name:"华哥"
+        } //拦截的对象
+        var handler ={   //定制拦截行为
+            get:(target,key)=>{  //get 是获取行为
+                // return "tom"
+                console.log(`${key}被读取`)
+                return target[key]
+            },
+            set:(target,key,value)=>{ //设置  设定 修改
+                console.log(`${key}被设置为${value}`)
+                target[key] = value
+            }
+        } //拦截的行为  如果handler是个空对象 就表示没有任务的拦截行为 访问p就等同于访问target
+
+        // get中的target表示目标对象 key是属性名 第三个是proxy本身
+        // set中的target表示目标对象 key是属性名 第三个是value 属性值 第四个是proxy本身
+        var p =new Proxy(target,handler) 
+        p.name //控制台输出
+        p.name ="123" //触发set方法
+
+        //01 定制私有变量
+        var huan ={
+            name:"白",
+            _age:22
+        }
+        var handler ={
+            get:(target,key)=>{
+                if(key.startsWith("_")){
+                    return 18
+                }
+                return target[key]
+            },
+            set:(target,key,value)=>{
+
+            }
+        }
+        var bai =new Proxy(huan,handler)
+
+        bai._age
+
+        // Object.defineProperty()  拦截
+        // 和proxy的区别
+        // vue 2.0用的是proxy
+        // vue 3.0用的是Object.defineProperty()
+
+        // Object.defineProperty 更好的拦截
+        // 但是无法监控到数组下标的变化，导致直接通过数组的下标给数组设置值，不能实时响应，
+        // 只能劫持对象的属性，因此我门需要对每个对象的每个属性进行遍历
+
+        // proxy  可以劫持整个对象 并返回一个新对象，有13中劫持操作
+        // 缺点就是 兼容性不好 (es6)
+
+        // Object.defineProperty 数据双向绑定
+        var Bai ={}
+        Object.defineProperty(Bai,"name",{ //监听name属性
+            get:()=>{
+                return v
+            },
+            set:(val)=>{
+                return v=val
+            }
+        })
+        Bai.name =11
+
+        // 数据的双向绑定
+        var btn = {}
+        Object.defineProperty(btn,"name",{
+            get:()=>{
+                console.log('获取')
+                return v
+            },
+            set:(val)=>{
+                console.log("修改了")
+                return v = val
+            }
+        })
+        ipt.onkeyup =()=>{
+            btn.name =ipt.value;
+            spa.innerHTML =btn.name
+        }
+        
+        // 缺点
+        // 当改变的值为数组是 就只触发get 不触发set  
+        btn.age =[]
+        btn.age.push("11")  //虽然修改了但是只触发了get
+
+        // 但是proxy可以触发
+        var arr =[]
+        var p =new Proxy(arr,{
+            get:(target,key)=>{
+                console.log("get")
+                return target[key]
+            },
+            set:(target,key,value)=>{
+                console.log("set")
+                return target[key] = value
+            }
+        })
+        p.push(1)
+
+        // 会触发两次get 两次 set
+        // 第一次get 获取arr中push方法的数据
+        // 第二次get 获取数组的长度 length
+        // 第一次set 设置arr[0] =1
+        // 第二次 设置arr长度为1
+    </script>
+</body>
+</html>

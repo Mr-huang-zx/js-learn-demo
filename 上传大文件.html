@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .outdiv{
+            width: 200px;
+            height: 30px;
+            position: relative;
+        }
+        .loaddiv{
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #loadding{
+            outline: none;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    
+    <input type="file" id="msg">
+
+    <button id="btn">提交</button>
+
+    <span class="span"></span>
+
+    <div class="outdiv">
+        <input id="loadding" type="text" readonly>
+
+        
+        <div class="loaddiv"></div>
+    </div>
+    
+
+
+
+    <script src="./jquery/jquery-3.5.1.min.js"></script>
+    <script src="./js/axios.js"></script>
+    <script>
+
+
+        var BigFileUpload = {
+            chunkSize:2*1024*1024, //分片大小  2M
+            fileSlice:File.prototype.slice,  //对文件分割
+            init(){
+                $('#btn').on('click',function () { 
+                    var files =document.getElementById("msg").files //
+                    var file = files[0]  //读取文件
+                    if(!file) return //没有上传文件
+                    //分片总数
+                    var count = Math.ceil(file.size/this.chunkSize)
+                    //难道时间戳
+                    var timestape = new Date().getTime()+""  // 转为字符串
+
+                    //缓存请求
+                    var axiosArray = [];
+                    for(var i = 0 ; i<count ;i++){
+                        //开始传的
+                        start = this.chunkSize*i
+                        //结束
+                        end = Math.min(file.size,strat+this.chunkSize)  //Math.min 是()中最小的值  保证取strat+this.chunkSize
+                        //构建表单
+                        var fd = new FormData() //将文件转为二进制
+                        fd.append('file',this.fileSlice.call(file,start,end)) //切割的一部分文件
+                        fd.append('name',file.name) //文件名字
+                        fd.append('total',count) //切片总数
+                        fd.append('size',file.size) //切片总数
+                        fd.append('index',i) //下标
+                        fd.append('hash',timestape) //时间戳
+
+                        // axiosArray.push(axios.post('http://139.196.42.209:8002/file/upload',fd))  //请求存起来
+                        axiosArray.push($.ajax({
+                            url:"http://139.196.42.209:8002/file/upload",
+                            type:'JSON',
+                            data:fd
+                        }))  //请求存起来
+                    };
+                    //axios.all() 请求都成功后返回结果 ，只要有一个请求不成功都不会执行
+                    axios.all(axiosArray).then((data)=>{
+
+                        var data = {
+                            size:file.size,
+                            name:file.name,
+                            hash:timestape,
+                            total:count,
+                        }
+                        //再请求，告知后台发完了
+                        axiosArray.push($.ajax({
+                            url:"http://139.196.42.209:8002/file/merge_chunks",
+                            type:'JSON',
+                            data:data,
+                            success:function(res){
+                                console.log('上传成功！')
+                            }
+                        })) 
+                       
+                    })
+
+                    //第二种方式  async await 异步同步化处理
+                    async function run(data){
+                        for(var i = 0 ;i<data.length ;i++){
+                            await data[i]  //每一个请求
+                            //添加进度条
+                            var n = i/data.length * 100 + "%" 
+                            $('.span').text(n) //显示的百分比
+                            $('.loaddiv').width(n)
+
+                        }
+
+                        var data = {
+                            size:file.size,
+                            name:file.name,
+                            hash:timestape,
+                            total:count,
+                        }
+                        //再请求，告知后台发完了
+                        axiosArray.push($.ajax({
+                            url:"http://139.196.42.209:8002/file/merge_chunks",
+                            type:'JSON',
+                            data:data,
+                            success:function(res){
+                                console.log('上传成功！')
+                                $('.span').text('100%') //显示的百分比
+                            $('.loaddiv').width("100%")
+                            }
+                        })) 
+                    }
+                    run(axiosArray)
+                 })
+            }
+        }
+        $(function () { 
+            BigFileUpload.init()
+
+
+
+
+
+         })
+    </script>
+</body>
+</html>

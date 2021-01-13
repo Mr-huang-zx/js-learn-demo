@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<body>
+
+	<script>
+		Vue.filter('money', function (val) {
+			val = val.toString().replace(/\$|\,/g, '');
+			if (isNaN(val)) {
+				val = "0";
+			}
+			let sign = (val == (val = Math.abs(val)));
+			val = Math.floor(val * 100 + 0.50000000001);
+			let cents = val % 100;
+			val = Math.floor(val / 100).toString();
+			if (cents < 10) {
+				cents = "0" + cents
+			}
+			for (var i = 0; i < Math.floor((val.length - (1 + i)) / 3); i++) {
+				val = val.substring(0, val.length - (4 * i + 3)) + ',' + val.substring(val.length - (4 * i + 3));
+			}
+
+			return (((sign) ? '' : '-') + val + '.' + cents);
+		});
+
+		// 函数
+		function toMoney(a) {
+			a = a.toString().replace(/\$|\,/g, '');
+			if (isNaN(a)) {
+				a = "0";
+			}
+			let sign = (a == (a = Math.abs(a)));
+			a = Math.floor(a * 100 + 0.50000000001);
+			let cents = a % 100;
+			a = Math.floor(a / 100).toString();
+			if (cents < 10) {
+				cents = "0" + cents
+			}
+			for (var i = 0; i < Math.floor((a.length - (1 + i)) / 3); i++) {
+				a = a.substring(0, a.length - (4 * i + 3)) + ',' + a.substring(a.length - (4 * i + 3));
+			}
+
+			return (((sign) ? '' : '-') + a + '.' + cents);
+		}
+	</script>
+</body>
+
+</html>

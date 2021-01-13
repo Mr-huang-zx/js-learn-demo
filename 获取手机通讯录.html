@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script src="jquery/jquery-3.5.1.min.js"></script>
+    <script>
+
+        // 需要引mui
+            var btnArray = ['不允许', '允许'];
+			mui.confirm('需要访问您的通讯录？', '系统提示', btnArray, function(e) {
+				if (e.index == 1) {
+					document.addEventListener("plusready", find(), false);
+					// alert(123)
+				}else{
+					mui.back()
+				}
+			})
+			function find() {
+				plus.contacts.getAddressBook(plus.contacts.ADDRESSBOOK_PHONE, function(addressbook) {
+					addressbook.find(["displayName", "phoneNumbers"], function(contacts) {
+						var list = "";
+						// console.log(JSON.stringify(contacts))
+						for (var i = 0; i < contacts.length; i++) {
+							if (contacts[i].phoneNumbers.length > 0) {
+								var str = contacts[i].displayName.substr(contacts[i].displayName.length - 2, 2);
+								list += "<div class='list-h'><span class='phoneName'>" + contacts[i].displayName + "</span>"+"<span class='phoneNumber'>" + contacts[i].phoneNumbers[
+									0].value + "</span>" + "</div>";
+							} else {
+			
+							}
+						}
+						$(".form_password").append(list);
+					}, function() {
+						alert("error");
+					}, {
+						multiple: true
+					});
+				}, function(e) {
+					alert("Get address book failed: " + e.message);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul{
+            width: 400px;
+            height: auto;
+            min-height: 400px;
+            background-color: green;
+            padding: 20px;
+            background-image: url(./images/yang.jfif);
+            background-size: 100% 100%;
+        }
+        ul li {
+            list-style: none;
+       
+        }
+        .bgN{
+            display: inline-block;
+            background-color: orange;
+            color: white;
+            border-radius: 10px;
+            font-size: 12px;
+            padding: 2px 4px;
+            margin-right: 10px;
+        }
+        .mainNm{
+            display: inline-block;
+            color: red;
+            font-weight: 700;
+            background-color: black;
+        }
+        .newNN{
+       
+            border-radius: 10px;
+            font-size: 12px;
+            padding: 2px 4px;
+            background-color: yellow;
+            color: red;
+            
+        }
+     
+    </style>
+</head>
+<body>
+
+    <ul id="mainN">
+
+    </ul>
+    <input id="inputN" type="text"><button id="sendI">发送</button>
+    <input id="changeN" type="text"><button id="newName">修改名字</button>
+
+
+    <script src="./jquery/jquery-3.5.1.min.js"></script>
+    <script>
+        var ws =new WebSocket('ws://139.196.42.209:8090')
+
+        ws.onopen =function(){
+        }
+
+        ws.onerror = function () { 
+        }
+
+        ws.onmessage =function (MessageEvent){
+            var data =JSON.parse(MessageEvent.data)
+        
+            show(data)
+        }
+
+        //消息的展示
+        function show (obj) { 
+            if(!obj.message) return;
+            var mainN =$("#mainN"),
+            _li =document.createElement('li')
+            var str;
+
+            //消息通知
+            if(obj.type == "notification"){
+                str =`<p>${obj.message}</p>`
+            }else if(obj.type == "message"){ //普通消息 
+                str =`<p><span class="bgN">${obj.nickname}</span><span class="mainNm">${obj.message}</span></p>`
+            } else if(obj.type == "nick_update"){//改新名称
+                str =`<p class="newNN">${obj.message}</p>`
+            } 
+
+            if(str){
+                _li.innerHTML = str
+                mainN.append(_li)
+            }
+
+        }
+        //点击修改名字
+        $("#newName").click(function () { 
+            var newname = $('#changeN').val()
+            if(newname==''){
+                alert("请填写您要修改的名称")
+            }
+            if(ws.readyState == WebSocket.OPEN){
+                ws.send('/nick_'+newname)
+            }
+        })
+        //点击发送消息
+        $('#sendI').click(function () {
+            if(ws.readyState==WebSocket.OPEN){
+                ws.send($("#inputN").val())
+            }
+            $("#inputN").val("")
+            $("#inputN").blur()
+        })
+    </script>
+</body>
+</html>

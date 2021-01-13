@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button>点击忘div加p</button>
+    <div></div>
+    <script>
+
+
+        // var i=10
+        // function getnn(){
+        //     console.log(this.i)
+        // }
+        // getnn()//在对象中this指向window
+
+        // var i=100;
+        // function getnn(){
+        //     i=101
+        //     console.log(this.i)
+        // }
+        // getnn() //   101
+        
+        // var i=100;
+        // function getnn(){
+        //     var i=101
+        //     console.log(this.i)
+        // }
+        // getnn()   //100  全局变量和局部变量同名上，全局变量不会作用于同名下的局部变量的作用域
+        
+        var i =120;
+        var obj=function gg(){
+            i=10;
+        }
+
+        `1.通过类名查找 HTML 元素在 IE 5,6,7,8 中无效`
+        `2.IE6 IE7 是不兼容queryselector的`
+
+        `3.addEventListener('click',function(){}) w3c的标准IE不支持
+        有第三个参数，如果为true则为捕获，为false或者不声明，则为冒泡事件
+        `
+        `4.IE下绑定事件和解除事件 这是微软的私人方法其他浏览器都不支持
+         ①绑定事件:attachEvent('onclick',function(){})
+         ①解除事件:detachEvent('ondblclick',function(){})`
+
+
+
+        window.onload= function (){
+
+
+            var a =0
+           document.querySelector('button').onclick=function(){
+                a++
+               var p =document.createElement('p')  //动态创元素节点
+               var pText =document.createTextNode('p的内容'+a)  //动态创建文本节点
+                var divs =document.querySelector('div')  
+                p.appendChild(pText)
+
+                divs.appendChild(p)
+           }
+            
+        }
+
+    function argus(){
+        console.log(arguments[0])
+    }
+    argus(1,2,3,4,[10,20])
+    //调用函数的时候，浏览器每次都会传递两个参数
+    `01.函数的上下文对象this`
+    `02.封装实例的对象arguments，有length属性 ，arguments下面有个callee函数，它指向的就是函数本身
+
+    注意:arguments不是一个数组,是一个对象 
+    `
+
+    `判断变量是不是数组`
+    `01.var arr = [1,2,3]
+        console.log(arr instanceof Array)  //true 有缺点
+        console.log(arr.__proto__.constructor ===Array)  //原型链的方法 true 但是在早期版本的IE未定义__proto__
+
+    注意：instanceof 和constructor 判断的变量只在当前页面才有用，子父页面传值的方式检测不了
+    `
+
+    // js自定义事件  CustomEvent 是固定的构造函数原型
+     var myEvent =new CustomEvent("event_name",{
+         detail:{
+             aa:12313,
+             name:"黄烛炫",
+             like:"小妹妹"
+         }
+     })
+     window.addEventListener('event_name',function(e){
+         console.log(e.detail)
+     })
+
+    //  然而，自定义的事件由于不是JS内置的事件，所以我们需要在JS代码中去显式地触发它。方法是使用 dispatchEvent
+    //  
+    if(window.dispatchEvent){
+        window.dispatchEvent(myEvent)
+    }else{
+
+        // 使用fireEvent,IE8低版本兼容
+        window.fireEvent(myEvent)
+    }
+
+
+    // 函数柯里化
+    function curry(fn) {
+        const args = Array.prototype.slice.call(arguments, 1); 
+        return function() {
+            const innerArgs = Array.prototype.slice.call(arguments);
+            const finalArgs = args.concat(innerArgs);
+            return fn.apply(null, finalArgs);
+        };
+    }
+    curry({a:123,b:"烛炫"})
+
+    var a =10,b=20;
+    var obj1 ={
+        a:100,
+        b:function(){
+            console.log(this.a)
+        }
+    }
+
+
+
+    Array.prototype.slice.call(arguments,2)  //将带有length属性的对象转换成一个数组 格式必须是{length:10,0:"",1:""}这样的
+    // eg
+    var obj1 ={length:2,0:"第一个参数",1:"第二个参数"}
+    console.log(Array.prototype.slice.call(obj1)) //["第一个参数","第二个参数"]
+    Array.prototype.slice.call()//第二个参数表示该数组截取的开始下标的位置
+
+    // call/apply 改变函数的作用域 (改变this指向)
+    obj1.call(null,"123")  //第一个参数为空表示指向window
+    </script>
+</body>
+</html>

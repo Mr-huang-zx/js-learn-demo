@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+
+    <script>
+        //基本类型和复杂类型的区别
+        var a =10;
+        var b = a;
+        b - 5 
+        console.log(a) // 10 
+        console.log(b)  //5
+
+        `b复制a后b值改变，不影响a`
+
+
+
+        var obj = {id:99};
+        var obj2 = obj ;
+        obj.id =100 ;
+        console.log(obj2.id)   //99
+        console.log(obj.id)   //99
+
+        //
+        `栈:js中的五种基本类型都直接按值存储在栈中，每种类型的数据占用的内存
+        大小是确定的。
+        栈由系统自动分配，只要栈的剩余空间大于所申请的空间，系统将为程序提供内存，
+        否则将报异常提示栈溢出
+        (一个程序有多个栈，靠栈来维护执行顺序)
+
+        最先放进去的在栈底，后放的在栈顶
+        `
+        `
+        堆:构造一个对象需要大量的内存，所以需要堆来开辟内存空间
+        堆:js中其他数据类型称为引用类型的数据，它们是通过拷贝和new出来的
+        这样的数据存储在堆中
+        说存储在堆不太准确
+        因为引用类型的数据的地址指针是存储于栈中，
+        当我们想要访问
+        引用类型的值时
+        需要从栈中获得对象的地址指针
+        然后再通过地址指针找到堆中所需要的数据
+
+        `
+
+        `对象的地址是放在栈中的
+        具体的值是存放在堆中`
+    </script>
+</body>
+</html>

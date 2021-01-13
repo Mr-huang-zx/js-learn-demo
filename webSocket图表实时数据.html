@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script src="./js/Echarts.js"></script>
+    <script>
+        var myChart = echarts.init(document.getElementById('main'));
+
+
+        option = {
+            xAxis: {
+                type: 'category',
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: [120, 200, 150, 80, 70, 110, 130],
+                type: 'bar',
+                showBackground: true,
+                backgroundStyle: {
+                    color: 'rgba(220, 220, 220, 0.8)'
+                }
+            }]
+        };
+        var ws = new WebSocket('ws://139.196.42.209:8090')
+        ws.onopen = function () {
+            // alert('连接成功')
+        }
+        ws.onerror = function () {
+            // alert('连接失败')
+        }
+        ws.onmessage = function (MessageEvent) {
+            var data = MessageEvent.data
+            data =JSON.parse(data).message
+            option.series[0].data=data
+            myChart.setOption(option);
+        }
+    </script>
+</body>
+
+</html>

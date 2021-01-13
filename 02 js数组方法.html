@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        //数组对象申明方式
+
+        //1 构造函数
+        var obj = new Object()
+
+        // 2.字面量表达式
+        var obj ={
+            name:""
+        }
+
+        `对象取值`
+        //1.
+        obj.name =20
+        //2.
+        obj['name'] = 20
+
+        //对象  
+        //1.简单字面量
+        var obj ={}
+        obj.name= '小白'
+
+        //2.嵌套字面量
+        var obj ={
+            name:"小白"
+        }
+
+        `当对象的键中名字为保留字，或者有- 或者空格的时候，键要加""引号`
+
+
+        /////////////////////////////////////////////////////
+
+        `函数`
+        //1.函数声明
+        function func() { 
+
+         }
+
+         // 2.函数表达式
+         var func =function(){
+
+         }
+
+         `区别`
+         `函数声明可提前调用 预解析了`
+         `函数表达式只能先声明，不能先调用`
+
+         `函数的优先级比变量的高`
+
+         ///////////////////////////////////////////////////////////
+         `对象的属性设置和获取`
+         //1.
+        obj.name =20
+        //2.
+        obj['name'] = 20
+
+        `区别:[]里面的是'' ,字符串 []里面也可以是一个变量 但是点只能是键的名字`
+         
+        `对象属性的删除`
+        var obj ={
+            name:'小白'
+        }
+        delete obj.name; //删除
+
+        `检测对象是否有某属性`
+        //1  in
+        var obj ={
+            name:'小白'
+        }
+        console.log('age' in obj)
+        //2. hasOwnProperty
+        console.log(obj.hasOwnProperty('age'))
+        `区别`
+        function func(){}
+        func.prototype.name = '111' //原型函数的自由属性
+
+        var func = new func()
+        func.age = 18
+        `in 自有属性和继承属性都能获取到`
+        `hasOwnProperty 只能获取到自有属性`
+    
+        
+        `对象便利 for in`
+        var obj = {name:"小白",age:19}
+        for(var i in obj){
+            console.log(i)  // name 和 age 获取的是对象的键  
+            obj[i]  //这就是对象取值的第二种，通过[]里面存放变量来获取值
+        }
+
+        `数组中for in`
+        var a = [3,4,5,6]
+        for(var i in a){
+            console.log(i)  //获取到的是数组的下标 而不是值。
+        }
+
+        `数组中`
+        `forEach没有return返回值` 
+        `map有返回值`
+        var a =[{id:1,name:'小白'},{id:2,name:"大树"}]
+        //只想要id
+        var aa =a.map(function(item){
+            return item.id
+        })
+        console.log(aa)  //[1,2]
+
+        `filter() 筛选数组 返回一个新数组`  `every()都满足条件返回true 只要有一个不满足就返回false`
+        var a = [1,2,3,3,6,8,9]
+        var aFile =a.filter(function (item) { 
+            return item>8
+         })
+         console.log(aFile) //[9]
+
+         `reduce 累加器`
+         var arrayN =[1,22,52,365,99,220]
+         var aa =arrayN.reduce(function(total,cur){//total 是第一次前面所有增加的， cur是每次增加新数字的
+
+            return total+cur
+         },0)   `第一次为0，就是reduce初始化的数 `   
+    </script>
+</body>
+</html>

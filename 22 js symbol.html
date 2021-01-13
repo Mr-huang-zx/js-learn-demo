@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+        // symbol 是es6引入的新的原始数据类型 表示独一无二的值
+
+        var a =Symbol()
+        typeof a  //"symbol"
+        var m =Symbol("n")//这个n是对symbol实例的描述
+
+        // Symbol 要是作为对象的键 是不能通过.来获取和添加的 通过[]来添加
+        var id =Symbol()
+        var obj ={
+            id:1,
+            [id]:2,
+        }
+        // 要获取Symbol 的值
+        obj[id]
+
+        var a ={}
+        var o =Symbol()
+        a[o] =1
+        var o =Symbol()
+        a[o] =2
+        // 不会被替换   {Symbol(): 1, Symbol(): 2}
+        // 要是想获取对应的值
+        console.log(a[Object.getOwnPropertySymbols(a)[1]])   
+
+        // 类型转换
+        var a =Symbol()
+        Boolean(a) //可以直接转换成布尔  不能转成数值
+        // 获取描述信息
+        var a =Symbol("小白") 
+        a.description  //"小白"
+
+        // 由于symbol() 每次调用都会返回一个不同的值，希望重新使用同一个值 Symbol.for() 方法可以做到
+        var a =Symbol("1")
+        var b =Symbol("1")
+        a==b //false
+        Symbol.for() 
+        // Symbol.for() 会被登记在一个全局环境中搜索  Symbol.for 会替换前一个
+        var a =Symbol.for("1")
+        var b =Symbol.for("1")
+        a==b //true
+
+        // 如果用了Symbol() 定义了对象的键  则for in 等方法获取不到Symbol定义的键的名字
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // Promise:是异步编程的解决方案 让异步变成更优雅 简单地来说就是一个容器，里面保存着某个未来才会结束的事情的结果
+        // 从语法上说，promise是一个对象
+        // 解决js中多个异步回调难以维护和控制的问题
+
+        // 回调陷阱  当后台返回的数据格式不是前端想要的  或者为了拿到数据发送多个请求 比如先发送个请求拿到id 再发送请求拿到name 再发送请求才拿到所有的数据
+        // 有时为了拿到数据需要发送多个请求,请求又是异步的
+
+        // 请求里面还有请求就叫做回调地狱，又叫做回调陷阱 这种写法不优美
+        // promise特点01.对象的状态不受外界影响 promise对象代表一个异步操作，有三种状态:
+        // 1.pending 进行中
+        // 2.fulfilled 已成功
+        // 3.rejected 已失败
+        // 状态一旦定好，任何操作都无法改变这个状态 
+
+        // 基本的写法
+        // Promise 是一个构造函数 用来生成 Promise实例
+        // Promise构造函数接收一个函数作为参数，该函数得了两个参数是resolve和reject。它们是两个函数，由js引擎提供，不同自己部署
+        
+        // resolve函数的作用是，将promise对象的状态从"未完成(pending)"变成”成功“ 即由pending变成resolved，
+        // 在异步操作成功时调用，并将异步操作结果作为参数传递出去
+        
+        // reject函数的作用是 将promise对象的状态由"未完成" 变成"失败" 即将pending变成rejected 
+        // 在异步操作失败时调用 并将异步操作结果作为参数传递出去
+        var p =new Promise(function(resolve,reject){
+            if(true){ //成功了
+                resolve("成功了")
+            }else{
+                reject("失败了")
+            }
+        })
+        // promise实例生成后 可以用then方法分别指定resolved状态和rejected状态的回调函数
+        // then方法可以接收两个函数作为参数，
+        // 第一个函数就是promise对象状态变为resolved时调用，
+        // 第二个函数就是promise对象状态为rejected时调用 是可选的
+        var p =new Promise(function(resolve,reject){
+            if(true){ //成功了
+                resolve("成功了")
+            }else{
+                reject("失败了")
+            }
+        })
+        p.then(function(res){
+            consoel.log(res)  //接收的就是成功的  也就是true里面的
+        },function(error){  //失败时的
+            console.log(error)
+        })
+
+        // 链式写法
+        var p =new Promise(function(resolve,reject){
+            if(true){ //成功了
+                resolve("成功了")
+            }else{
+                reject("失败了")
+            }
+        })
+        p.then(function(res){
+            return new Promise(function(resolve,reject){
+                if(true){ //成功了
+                    resolve("成功了")
+                }else{
+                    reject("失败了")
+                } 
+            }).then(function(success){
+                
+            },function(erroe){
+
+            })
+        },function(error){  //失败时的
+            console.log(error)
+        })
+
+
+        // ajax封装
+        var getJSON =function(url,type,data){
+            var p =new Promise(function(resolve,reject){
+                var xmlHttp =new XMLHttpRequest();
+                xmlHttp.open(type,url);
+                if(type=="get"){
+                    xmlHttp.send()
+                }else{
+                    xmlHttp.setRequestHeader('')
+                    xmlHttp.send(JSON.stringify(data))
+                }
+                xmlHttp.responseType ="json" ;//响应的数据类型
+                // 监听状态
+                xmlHttp.onreadystatechange =function(){
+                    if(xmlHttp.readyState !==4) return
+                    if(xmlHttp.status===200){
+                        resolve(xmlHttp.response)
+                    }else{
+                        reject(xmlHttp.statusText)
+                    }
+                }
+            })
+            return p
+        }
+        getJSON("url","get").then(function(succ){
+
+        },function(error){
+            
+        })
+
+        // promise 并行
+        var p1 =new Promise((resolve,reject)=>{
+            setTimeout(()=>{resolve("p1")},1000)
+        })
+        var p2 =new Promise((resolve,reject)=>{
+            setTimeout(()=>{resolve("p2")},5000)
+        })
+
+        Promise.all([p1,p2]).then(([d1,d2])=>{console.log(d1,d2)})
+
+        // promise.all 两个都要执行完之后才会执行then
+        Promise.all(["请求1,".then(res=>{}),"请求2".then(res=>{})]).then(([d1,d2])=>{}) //d1是请求1的值 d2是请求2的值
+
+        // promise.race
+        var p3 =new Promise((resolve,reject)=>{
+            setTimeout(()=>{resolve("p3")},1000)
+        })
+        var p4 =new Promise((resolve,reject)=>{
+            setTimeout(()=>{resolve("p4")},5000)
+        })
+
+        Promise.all([p3,p4]).then(([d3,d4])=>{console.log(d3,d4)})
+        // promise.race 谁最快执行就执行谁，只执行一个
+    </script>
+</body>
+</html>

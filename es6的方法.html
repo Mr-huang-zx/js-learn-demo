@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        var a =10,
+        b =20
+    
+        function fun() { 
+            //不设定形参可以根据arguments[0]下标来取传来的值
+            console.log(arguments)  
+         }
+         fun("num1",a,b)
+
+////////////////////////////////////////////////////////////////////
+
+
+         var b =[1,1,2,2,3,3,3,4]
+        //通过 new Set() 完成数组去重后返回一个新数组，
+        //再通过Array.from 将去重后的数据结构转换为一个新数组
+
+         console.log( Array.from(new Set(b)))
+        // 注意:ie完全不兼容，得另做处理！！！！！！！！！！！！！！！！！！！
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    </script>
+</body>
+
+
+</html>

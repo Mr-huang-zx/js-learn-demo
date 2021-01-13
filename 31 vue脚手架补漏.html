@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <script>
+        // export 和export default的区别
+        // export 可以引入多个，写在{}中
+        // export default 只能引入一个 一般引入文件名
+        // export var a =10 
+        // 引入方式 import {a} from "./"
+
+        // export default {}
+        // 在其他地方引入 import App from "./"
+
+        // 子父组件传值
+        // 父传子
+        // 子接收方式
+        // 01.props:['datas']
+        // 02.props:{
+        //     datas:Array
+        // }
+        // 03
+        // props:{
+        //     datas:{
+        //         type:String,
+        //         default:"1234" 默认值
+        //     },
+        //      Arrs:{
+        //       type: Array,
+        //       default: function () {
+        //          return [1, 5, 6, 4]
+        //       }
+        //    }
+        // }
+        // 传对象
+        // 接收
+        // props:{
+            // action:Function
+        // }
+
+        // 父获取子的方法和数据
+        // 在子组件标签上
+        // <Btn ref='get'/>
+        // this.$refs.get.name
+        // this.$refs.get.func()
+
+        // $emit 子组件传给父组件
+        // 子组件中
+         function send(){
+             this.$emit('funcFather',this.msg)
+         }
+        //  父组件中  //子组件标签@加上在子组件定义的名字 里面自己定义一个事件名称
+        // <Btn @funcFather='getMsg'/>
+        // getMsg(value){
+        //     console.log(value)  value 就是子传给父的数据
+        // }
+
+        // 子组件操作父组件(根据父组件传的事件)
+        // 父
+        // <Btn :event="send" @myFun='retuFun'/>
+        // methods: {
+        //     send(){
+
+        //     },
+        //     retuFun(val){
+                // val()
+        //     }
+        // }
+
+        // 子
+        // <button type="btn" @click="getFun"></button>
+        // props:{
+        //     event:Function
+        // }
+        // methods: {
+        //     getFun(){
+        //         this.$emit("myFun",this.event)
+        //     }
+        // }
+
+        // sync修饰符子组件直接改变父组件值 自动更新父组件属性的v-on监听器
+        // 父组件中
+        // <Btn :toson.sync='name' />
+        // data(){name:"123"}
+
+        // 子组件中
+        // props:{
+        //     name:{
+        //         type:String,
+        //         default:"111"
+        //     }
+        // }
+        // send(){
+        //     this.$emit("update:toson","这是要改变的值")  update是固定的
+        // }
+
+        // APP.vue中底部导航栏切换显示隐藏的方法
+        // <tabbar v-if='this.$route.meta.isShowtabbar'/>
+        // 在需要显示的路由添加
+        // {
+        //     name:"One",
+        //     path:"/One",
+        //     meta:{
+        //         isShowtabbar:true
+        //     },
+        // }
+
+
+
+        //components 点击路由切换
+        // <component :is="falg"></component> 
+
+
+        // 异步组件引入
+        // components:{
+        //     "test":()=>import("./test")
+        // }
+
+        // 定义公共组件
+        // 01 .在main.js中
+        // Vue.component("test",{render(){return 1}})
+        // 直接在页面写<test />
+        // 缺点 容易忽然main.js
+
+        // 02
+        // 第一步
+        // 创建一个公共文件夹global,在里面创建一个index.js 创建几个存放公共组件的文件夹
+        // 在文件夹中创建你要的.vue文件  再创建.js文件  在.js文件中引入.vue组件并且export出去
+        // 第二步在main.js引入
+        // 第三步在index.js编辑
+        // import Vue from "vue"
+        // const componentsContext = require.context("./",true,/\.js$/)  
+        // 第一个参数是查找当前文件的第几层，第二个是否查找该层的子页面，嗲那个正则表达式
+        // componentsContext.keys().forEach(component =>{
+            // const componentConfig =componentContext(component)
+            // const ctrl = componentConfig.default || componentConfig  兼容import export和require module.export两种规范
+            // 加载全局组件
+            // if(ctrl && ctrl.name){
+            //     Vue.component(ctrl.name,ctrl)
+            // }
+        // })
+
+        // 路由跳转传参
+        // 01.通过params  标志性符号 /
+        // <router-link :to="'/test/'+id">  
+        // 然后在路由配置地方 path:"/test/:id"1
+
+        // 错误写法
+        // <router-link :to="{path:"/test",params:{id:123}}">  
+        // 应该这样写  <router-link :to="{name:"test",params:{id:123}}"> 
+
+        // 接收 this.$route.params.id
+        // 参数会在url中暴露出来  /id=10
+
+        // 02 query 标志性符号 ?
+        // <router-link :to="{path:"/test",query:{id:100}">
+        //   接收 this.$route.query.id
+        // url中  ?id=100  
+        
+        // 区别
+        // params 需要在router.js中的路由后面定义参数
+        // query不用再路由后面定义参数
+
+        // route和router的区别
+        // router
+        // 路由的实例 VueRouter的实例 包含了路由跳转的方法，钩子函数等
+        // route
+        // 包含了路由信息
+
+        // 二级路由
+        // 目录结构
+        // 在test文件夹里面有三个文件 index.vue  home.vue  second.vue
+        [
+            {
+                path:"./test",
+                name:"test",
+                component:()=>import("../components/test/index.vue"),
+                children:[
+                    {
+                        path:"/test/home",
+                        // 或者
+                        path:"test" ,//二级路由里面不用加 /
+                        component:()=>import("../components/test/home.vue")
+                    },
+                    {
+                        path:"/test/second",
+                        // 或者
+                        path:"second" ,//二级路由里面不用加 /
+                        component:()=>import("../components/test/second.vue")
+                    }
+                ]
+            }
+        ]
+        // 然后在数据中也要有对应的页面路由结构
+        data(){
+            return{
+                list:[
+                    {
+                        path:"./test",
+                        name:"test",
+                        component:()=>import("../components/test/index.vue"),
+                        children:[
+                            {
+                                path:"/test/home",
+                                // 或者
+                                path:"test" ,//二级路由里面不用加 /
+                                component:()=>import("../components/test/home.vue")
+                            },
+                            {
+                                path:"/test/second",
+                                // 或者
+                                path:"second" ,//二级路由里面不用加 /
+                                component:()=>import("../components/test/second.vue")
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+        // 二级路由的出口在父页面
+        // 也就是上面的 index.vue中写入<router-view>
+
+        // 获取面包屑 路由名字
+        // 在index.js中
+        // meta:{name:"衣服"}
+        // 在想拿到的页面
+        watch:{
+            $route(to,from){
+                console.log(to.matched)
+            }
+        }
+        //for循环 {{to.matched.mate.name}}
+
+        // axios中的get请求传的参数可以写在{params:{}}中
+    </script>
+</body>
+
+</html>

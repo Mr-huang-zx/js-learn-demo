@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        `序列化`
+        var a = {name:'小白', age:18}
+
+        JSON.stringify(a)  `对象转JSON字符串`   
+        JSON.parse()  `将JSON字符串转对象` 
+
+        /////////////////////////////////////////////////
+
+        `数组浅拷贝变成深拷贝,单单靠一级来测试深浅拷贝是不行的，多层级数据测试`
+        var a = [1,2,2,3,6,4]
+        var a2 = a.concat();   //也可以是 a.slice()
+        a2.push("新数组")
+        console.log(a)  //依旧是[1,2,2,3,6,4]
+        console.log(a2) //[1,2,2,3,6,4,"新数组"]
+
+        ///////////////////////////////////////////////////
+        `对象转 new Object()  仅仅是一级有用`
+        `Object.assign() 转深拷贝(不是深拷贝) 一级有用 二级不管用`
+        var a ={name:"小白",age:12}
+        var b ={}
+        var c =Object.assign(b,a)  //两个对象合并，a会合并b，如果两个对象有键一样，后面的会替换掉前面的
+        c.name ="修改成功"
+
+        console.log(a)
+        console.log(c)
+
+        /////
+        `序列化转深拷贝 但是不支持对象里面放function  获取不到原对象中的function`
+        var obj1 ={name:"小白",age:10,obj:{id:1110}}
+
+        var obj2 =JSON.parse(JSON.stringify(obj1))
+        obj2.obj.id =1999 //获取不到
+        console.log(obj1)  //id为1110
+        console.log(obj2) //id为1999
+        `转换深拷贝成功`
+
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        `预解析 当变量和函数同名时,优先留下函数的值(函数的优先级更高)`
+        var fun //变量提升
+        `function预解析为代码块，也就是整个解析，但是可能没调用`
+
+        console.log(a)
+        var a =123
+        function a() { 
+            console.log(456)
+        }
+
+         `解析过程`
+         //1.
+         var a;
+         //2.
+         function a() { 
+            console.log(456)
+        }//此时解析了但是并未调用
+        //3.开始逐一解析
+        console.log(a)  //此时调用了function
+        //////////////////////////////////////////////
+        `所以结果是  a() { 
+            console.log(456)
+        }`
+
+
+        /////////////////////////////////////////////////////////////////
+        `全局作用域和局部作用域`
+
+    </script>
+</body>
+</html>

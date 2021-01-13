@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" class="ipt" oninput="get()" autocomplete="off">
+    <p class="p"></p>
+
+    <script>
+        var a =["香蕉","苹果","香梨","木瓜","木头"]
+        var pp = document.getElementsByClassName("p")[0]
+        function get(){
+
+            var h =document.getElementsByClassName("ipt")[0].value
+        
+            if(h==''){
+                pp.innerHTML=""
+                return
+            }
+
+            var b =a.filter(i=>{
+                return i.includes(h)
+            })
+            pp.innerHTML =b
+        }
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        // async  await 是建立在promise机制上的  语法糖
+        async function f1(){
+            return 1
+        }
+        f1()  //返回的是一个promise对象 并取不到1 
+        // 正确取值方式
+        f1().then(res=>{console.log(res)})  //默认为成功状态  该函数的返回值传给then的参数
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        async function f1(){
+            return 1
+        }
+        // 正确取值方式
+        f1().then(res=>{console.log(res)})  //默认为成功状态  该函数的返回值传给then的参数
+        console.log(2)
+
+        // 输出顺序 先输出2 后是1
+        // 原因  宏任务 微任务
+        // 宏任务 :setTimeout  setInterval   最后执行
+        // 微任务:微任务执行完之后才取执行宏任务   promise 中的then  catch async await等方法  async 和await返回一个promise对象 是同步任务 then catch是异步
+
+        // promise是es6提出来的解决异步编程导致陷入回调地狱问题的 
+        // promise 本身是同步的 但是它的then catch等方法是异步的
+
+        // 所以同步会先输出
+        console.log(1)
+        let aa =new Promise((resolve,reject)=>{
+            resolve()
+            console.log(2)
+        })
+        console.log(3)
+        aa.then(()=>{
+            console.log(4)
+        })
+        console.log(5)
+
+        // 1 2 3 5 4
+
+        // async 返回的是一个promise对象 所以是同步 
+        // 但是它的then 是异步
+
+        // await 必须在async内部使用 正常情况下 await 命令后面是一个promise对象  它也可以是个其他值
+        function a1(){
+            console.log(1)
+        }
+        async function a2(){
+            console.log(2)
+            await a1()      //这里会阻塞 await之后的代码变成了异步的任务 但是await这代码会执行 会等到所有同步任务完成后才取执行await后面的代码    
+            console.log(3)
+        }
+        a2()
+        console.log(4)
+        // 2 4 1 3
+     </script>
+</body>
+</html>

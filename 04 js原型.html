@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+
+
+
+        //js原型  只有函数对象才有原型对象
+        //原型对象就是函数对象.prototype
+        `原型是一个对象，其他对象可以通过它实现属性继承`    
+        `对象分两种，一种是普通对象obj，一种是函数对象function`
+        `★★★  prototype 是函数对象才有的属性 prototype下面有个constructor构造器，指向这个函数`
+        `★★★ _proto_ 是每个对象都有的属性 , _proto_ 指向它所对应的构造函数的原型对象`
+        `通过typeof检测`
+        //函数对象
+        function hanshu() { 
+
+         }
+
+         //普通对象
+         var a ={}  //或者 var a =new hanshu()
+
+         /////////////////////////////////////////////////////////////////
+         `★★★★  原型对象就是a2.prototype,构造函数a2  每个对象都有一个_proto_的内部属性，指向它所对应的构造函数的原型对象，原型链基于_proto_`
+         function a2() {  }
+         var aaa =new a2()   
+         `这里aaa的构造函数是a2`
+
+         ///////////////////////////////////////////////////////////////////////////////////////
+         //////////////////////////////////////////////////////////////////////////////////////
+         `原型对象写法`
+         function func() {  } 
+         //向原型对象里面添加name age属性
+         func.prototype.name = "小白"
+         func.prototype.age = 22
+         var p1 =new func()
+         var p2 =new func()
+         `目的(需求):生成多个实例对象`
+
+         `封装一个公共对象01`
+         function func(name,age){
+             return{
+                 name:name,
+                 age:age
+             }
+         }
+         var ning = func("小白",22)
+
+         `通过构造函数封装  构造函数的名字首字母一般大写`
+         function Gouzao(name,age){
+             this.name =name;
+             this.age =age;
+
+         }
+         var aaa =new Gouzao("小白",22) //这个是普通对象
+         `将Gouzao里面一直不变的属性放到原型对象的constructor里面，以免造成内存浪费`
+         //如 Gouzao函数里面都有eat属性为某个值
+         `添加方法`
+         Gouzao.constructor.eat ="吃草"
+         Gouzao.constructor.play = function(){
+
+         }
+         `检验对象里面包含某属性`
+         `1.in (查找普通对象_proto本身就有的还是来源于原型对象prototype里面的  只要任意一个里面包含就返回true)`
+         
+         `2.hasOwnproperty 本身对象里面有才返回true 如果本身对象里面没有，不管原型对象里面有没有都返回false `
+
+         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         `继承1 初步了解  原型继承 优点:同一个原型对象  缺点: 不能修改原型对象，会影响所有实例`
+
+         function Alls(){
+             this.type ="动物"
+         }
+
+         function Cat(name,color){
+             this.name = name;
+             this.color = color;
+         }
+         `将Alls的属性继承到Cat里面`
+         Cat.prototype =new Alls()  //Cat继承了Alls
+         console.log(Cat.prototype.type)  //就可以调用Alls里面的属性
+         var a =new Cat("小白",'红色')
+         console.log(a.__proto__.type)    //这里的__是两条杠
+
+         ////////////////////////////////////////////////////////////////////////////////////////////////
+         `原型链(就是当继承关系很复杂时,一层一层查找)`
+         a.__proto__.__proto__.__proto__.name  .......
+
+
+         ///////////////////////////////////////////////////////////////////////////////////////////////
+         `构造函数的继承2 缺点:父类成员被创建多次，存在冗余且不在同一个原型对象 `
+         function a(){
+             this.name = "我是a"
+         }
+
+         `apply和call改变this指向用法`
+         function acd(){
+             this.name ="小白";
+             this.age =22
+         }
+         var obj ={}
+         `将acd的值赋予给obj 并且传值给acd`
+         acd.apply(obj,['a','b']) //apply传的值是个数组
+         acd.call(obj,'a','b') //call传的值是个字符串
+
+         //注:apply和call只能拷贝成员，原型对象不会拷贝
+
+         ///////////////////////////////////////////////////////////////////////////////////////////////////
+         `组合继承 继承3`
+          function Anima(){
+              this.type = '鸟'
+          }
+          Anima.prototype.eat=function(){console.log("啄木鸟")}
+
+          function Pig(name,color){
+              this.name = name;
+              this.color = color;
+              Anima.apply(this)  //相当于把Anima里面的成员拷贝了一份
+          }
+          Pig.prototype = new Anima() //将Anima所有属性放到pig的原型对象中
+
+          var a =new Pig('小','白')
+          var b =new Pig('大','红')
+          a.type ="你是猪吗"       ///此时改变Pig的原型对象的属性值,但是其他拷贝的构造函数并不会跟着改变 因为apply了一份
+
+          console.log(a.type)
+          console.log(b.type)
+
+          //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+          `原型链`
+          function a1(){
+              this.a =123
+          }
+          function a2(){
+              this.b =456
+          }
+          function a3(){
+              this.c =789
+          }
+          
+          a2.prototype =new a1()
+          a3.prototype =new a2()
+        
+          var aa =new a3() 
+          `获取对应的值直接aa.a  或者aa.b ` //会一级一级往下找
+        //   console.log(aa.__proto__.__proto__a)
+        `改变值得一级一级 找到你想改变得值对应的层级`
+        aa.__proto__.__proto__.__proto__.a =1111111111111
+        `删除`
+        delete aa.__proto__.__proto__.__proto__.a
+
+    </script>
+    
+</body>
+</html>

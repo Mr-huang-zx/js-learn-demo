@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+        `this关键字 它代表函数运行时，自动生成的一个内部对象，只能在函数内部使用 谁调用了指向谁`
+        function f(){
+            console.log(this)
+        }
+        f()  //此时this指向是window
+        ///////////////////////////////////////
+        function f(){
+            'use strict'  //严格模式
+            console.log(this)  //此时是undefined
+        }
+        f()
+        ////////////////////////////////////////
+        `在内置函数中 还是指向window`
+        function f(){
+            console.log(this) //window
+        }
+        setInterval(f,1000)  
+
+        ///////////////////////////////////////////////////
+        `回调函数:指一个函数被作为一个参数传递给另一个函数 叫做回调函数 this指向window`
+        function f(v){
+            console.log(v) //window
+        }
+        console.log(f)      //打印的是整个函数
+        console.log(f("123")) //打印的是调用后的结果
+
+        function addd(callback,v){
+            callback(v)
+        }
+        addd(f,'123')
+
+        f2(function(){},'123')  //这个function就是个匿名函数
+
+        `数组this指向`
+        var arr =[f1,2,3,4]
+        function fi(){
+            console.log(this)
+        }
+        arr[0]()  //数组调用  此时的调用者是arr 所以this指向arr这个数组
+
+        function dd(){
+            console.log(this)
+        }
+        window.dd()  //此时的调用者是window
+
+        `构造函数 this指向新创建的对象，而不是构造函数本身`
+        function func(name,age){
+            this.name =name;
+            this.age =age;
+            this.action =function(){}
+        }
+        var newfun =new func("x小白",18)
+        newfun.action()  //this指向新的 也就是newfun
+
+        /////////////////////////////////////////////////////////////////////////////////////
+        `改变this指向1.apply和call  2.bind`
+        var a =10;
+        function f1(a,b){
+            return this.aaa + a + b
+        }
+
+        var fun2 ={
+            aaa:100,
+            action:f1
+        }
+        var fun1 ={
+            aaa:999,
+
+        }
+        fun2.action(1,2) // 103
+
+        //用apply改变指向
+        fun2.action.apply(window,[1,2])  //13
+        fun2.action.call(window,1,2)  //13 
+        `调用者.apply(要指向的对象,[要传的参数])`
+
+        `bind()   绑定this 改变作用域 一旦绑定后就不能改变this的指向了`
+        fun2.bind(fun1,1,20)  //此时this的指向是fun1  但是之后就不能在改变this指向
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////
+        `时间冒泡,委托和捕获`
+        `js阻止时间冒泡`
+        btn.onclick =function(e){
+            e.stopPropagation() //阻止事件冒泡
+        }
+
+        `事件委托`
+        `给父点击事件改变子标签的内容
+        btn.onclic=function(e){
+            if(e.target.nodeName ==='Li'){
+                e.target.style.color ='red'
+            }
+        }
+        `
+        //nodeName 可以获取标签的名字 DIV LI P 等等
+        `event有三个属性
+        
+        01.event.target  是触发事件的元素 其他不会改变
+        02.this 当前，是不断变化的
+        03.event.currentTarget 绑定事件的元素
+        `
+
+    </script>
+</body>
+</html>

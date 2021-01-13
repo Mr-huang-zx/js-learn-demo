@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+        // 1.  cors 后端跨域
+
+        // 2.nginx代理服务  后台太老不支持cors时  nginx 前端通过中间代理服务转到后台 后台通过中间代理服务给前端传
+
+        //jsonp  通过ajax的dataType:"jsonp"   
+          $.ajax({
+            url:"http://localhost:3000/data/add",
+                data:{"name":"小白"},
+                dataType:"jsonp", //dataType 发送的格式是jsonp
+                jsonpCallback:"handleResponse"  //这里的handleResponse 和后台的函数名一致
+            })
+
+            function handleResponse(data){
+                console.log(data)
+            }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // 软件开发流程
+        // 1.需求   2.分析  3.设计  4.开发  5.测试  6.部署  7.上线  8.运维  
+
+        // 设计模式  原则 开闭原则
+        // 设计模式是:前辈们对代码开发的经验的总结，是解决特定问题的一系列套路，是一套来提高代码可复用性，可维护性，可读性，稳健性，以及安全性的解决方案
+
+        // 模式三大类
+        // 1.创建型模式
+        // 2.结构型模式(搭积木 搭配使用):
+        // 3.行为型模式(交互)
+
+
+    // 1. 观察者模式
+
+        // 观察者与被观察者
+        // 1.被观察者(发布者)
+        // 2.观察者(订阅者)
+        // 发布者给订阅列表发消息
+
+        //发布者
+        class Subject{  
+            constructor(){  //构造器
+                this.subs = []  //订阅列表，数组
+            }
+            addSubs(sub){  //方法
+                this.subs.push(sub)
+
+            }
+            notic(food){  //通知订阅者
+                this.subs.forEach(sub=>{
+                    sub.update(food)   //update 是通知
+                })
+            }
+        }
+        // 订阅者
+        class Observer{
+            constructor(name,food){  //订阅者订阅的东西
+                this.name =name;
+                this.food =food;
+            }
+            update(food){
+                if(food ==this.food){ //对应的订阅者才会收到通知
+                    console.log(this.name+"的外卖"+food)
+                }
+            }
+        }
+
+        var subject =new Subject()
+
+        var tom = new Observer("tom","地三鲜") //订阅者tom 订阅了地三鲜
+
+        subject.addSubs(tom)  //将订阅者函数以及参数添加到到发布者的订阅列表
+
+        subject.notic("地三鲜") //发布者调用通知方法里面的update通知订阅者
+
+
+        // 优点：观察者模式在观察者和被观察者之间建立一个耦合（也就是区分）
+
+
+    // 2.代理模式:代替被请求者来处理相关事务 代理对象一般会全权代理被请求者的全部职能，客户访问代理对象就像在访问被请求者一样，
+    // 虽然代理对象最终还是可能会访问被请求者，但是其可以在请求之前或者请求之后进行一些额外的工作，或者说客户的请求不合法，直接拒绝客户的请求
+    // (就像明星的经纪人的职能)
+
+    //很多无效请求，代理直接 拒绝
+
+        var girl =function(name){  //女孩定义了自己的名字
+            this.name =name
+        }    
+        var boy =function(girl){  //男孩向男孩表白所以知道了女孩的名字
+            this.girl =girl;
+            this.sendGift =function(gift){   //男孩编辑好内容  发送事件
+                alert("Hi~"+girl.name+",男孩送了你"+gift)
+            }
+        }
+
+        var proxyObj =function(girl){   //代理也要知道女孩名字   
+            // this.girl =girl; 
+            this.sendGift =function(gift){  //通过一个方法向男孩传递女孩的名字，并且调用了男孩的事件并且传递礼物
+                (new boy(girl)).sendGift(gift)
+
+                // 这里的(new boy(girl))   等价于  var a =new boy(girl)  a.sendGift  
+            }
+        }
+
+        var proxy =new proxyObj(new girl("小花花"))  //构造函数 给代理和女孩发送女孩的名字
+        proxy.sendGift("999多玫瑰花")
+        
+
+        // new实例化对象的含义
+
+         var a =function(name){
+
+         }
+         var b =new a() 
+
+        //  这里的new a() 相当于实例化了
+        // 结果是
+        var b = function(name){}
+        
+        // new 相当于创建了一个空对象，
+        var tes = new b()
+        // 01. var obj={}
+        // 02. obj.prototype =tes 
+        // 03.return obj
+
+    </script>
+</body>
+</html>

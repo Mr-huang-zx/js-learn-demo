@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 1.解构:es6允许按照一定的模式，从数组中和对象中提取值，堆变量进行赋值，这被称为解构
+        // 解构是es6的新特性，比es5代码，简洁，清晰，减少代码量
+
+        // 数组解构
+            // 匹配模式:左边变量=右边对应的值
+            let [a,b,c] = [1,2,3]
+
+            // 当右边的值为undefined时，左边默认值生效
+            let [a,b=2] =[10,undefined]  //10 2
+            
+            // 惰性求值:如果默认值是个表达式，那么这个表达式只有在用到的时候才会求值
+            function fun(){
+                return 123465
+            }
+
+            let [x=fun()] =[1]  //x = 1  惰性求值，这是右边已经有值了，所以没用到fun  只有用到的时候才会赋值
+            let [x =fun()] = []  //x =123456
+            let [x =fun()] = undefined  //x =123456
+        
+        
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // 对象解构 :和数组解构最大的不同是，数组是按照顺序，对象是按照属性名取值
+           let {a,b,c} ={a:1,c:2,b:3}
+
+           let datas={name:"小白",age:22}
+
+           function getI(n,{name,age}){
+
+           }
+           getI(name,datas)
+
+           //当全局的变量名和局部的变量名同名时出现弊端
+            //解决方法 :别名
+            let {a:q,b,c} ={a:1,c:2,b:3}
+            //a只是和右边的a匹配，而真正变量的是q  是:后面那个  取a的值  用q
+            // 默认值
+            let {x=30} = {x:10} // x=10  30只是默认值 只有x:undefined时才取默认值
+            let {x,y =10} ={x:10} // x = 10, y=10
+
+            // 对象默认值生效的条件是，对象的属性值严格等于undefined
+            let {x=10,y=10} ={undefined,20} //x=10 y=20
+
+            // 又有别名又有默认值时
+            let {x:n=1,y:m=10} ={x:1,y:10}  // n=1 m=10  取值用别名，赋值用匹配名
+
+            let x;
+           ({x}={x:10}) //不加括号会报错
+
+        //    数组解构
+            function get([x,y]){
+                return x+y
+            }
+            get([1,2])
+
+        
+        // 对象也一样
+            function get({x,y}){
+                return x+y
+            }
+            get({x:1,y:11})
+
+            // 当实参只有一个，而形参穿了两个是报错，[x] =[1,2]
+            // 添加默认值 
+            function get([x=10,y=1]){
+                return x+y
+            }
+            get([1,2])
+
+            `匹配方式  实参=形参  [x,y] = [1,2]`
+            
+            // 字符串解构
+            let [a,b,c,d,e] ='casaa' //a=c b=a  一个一个去解构
+
+            let {x=0,y=0} ={} //相当于x y 的默认值都是0
+
+         `.1`   
+            function func({x,y} ={x:0,y:0}) { 
+                return [x,y]
+            }
+            func({x=10})  //[10,undefined] 因为y没有传值 所以没找到  等同于{x,y} ={x:10}  所以yundefined
+            func() //[0,0]
+        `02`
+            function func({x=10,y=10} ={x:0,y:0}) { 
+                return [x,y]
+            }  
+            func({x=10})  //[10,10]  //这里的xy都有默认值
+            func() //[10,10]  
+
+
+            // 字符串方法扩展
+            // es5
+            charAt() //返回指定索引位置的字符
+            indexOf()//返回字符串中指定字符第一次出现的位置  没有时返回-1
+
+            lastIndexOf()//返回字符串中指定字符最后一次出现的位置 没有时返回-1
+            slice()  //返回新字符串 第一个数开始的下标，包括在内  第二个数代表结束的下标，不包括 ，
+            //slice(5,-5)当第一个数为正，第二个为负数时 第一个数是指从前面数开始的下标， 第二个数是指从后面往前面开始数的下标，并且包括该下标
+
+            split() //把字符串分割成字符串数组
+            toLowerCase() //把字符串转换成小写
+            toUpperCase() //把字符串转换成大写
+            substr() //从开始索引值起取指定数目的字符
+            substring()//返回新字符串 第一个数开始的下标，包括在内  第二个数代表结束的下标，不包括
+            // substring(5,-10)  //第一个数为正数，第二个为负数时，第一个开始的下标往前全部都取 第一个不包括第一个下标的数
+
+            // es6
+            includes() //返回布尔型 表示是否找到参数字符 str.includes("a")  str 字符串中是否包含"a"
+            startsWith() // 表示参数字符串是否在原字符串的头部  let a ="hello"  a.startsWith("he")  如果有第二个参数 第二个参数表示搜索的位置
+            endsWith() // 表示参数字符串是否在原字符串的尾部  let a ="hello"  a.startsWith("lo")    如果有第二个参数 第二个参数表示搜索的位置
+            repeat() //表示将字符串重复n次  str.repeat(5)  "abcabcabcabcabc"
+            padStart() //用于头部补全  var a ="1"  a.padStart(2,"0")   01  2代表字符串总长度
+            padEnd() //用于尾部补全  var a ="1"  a.padEnd(2,"0")    10
+
+
+
+
+            // 函数扩展
+            // 函数默认值
+            //es5
+            function fun(x,y){
+                y=y||10
+                console.log(x,y)
+            }
+            fun(10)
+
+            //es6
+            function fun(x,y=10){
+                console.log(x,y)
+            }
+            fun(10)
+
+            //es6 的rest参数  ...变量名  获取函数的多余参数  这样就不用到arguments对象了   ...变量名   之后不能有任何参数 不然会报错
+            //01.
+            function fun(...agr){
+                console.log(agr)   //拿到的是个数组[,1,2,3,3,3,6,5]
+            }
+            fun(1,2,3,3,3,6,5)
+            //02.
+            function fun(a,...agr){
+                console.log(agr)   //[2,3,3,3,6,5]
+            }
+            fun(1,2,3,3,3,6,5)
+
+
+            // for of求参数的和
+
+            function add(...values){
+                var sum =0 ;
+                for(var i of values){
+                    sum+=i
+                }
+                return sum
+            }
+            add(1,5,6,22,663)
+
+            // 箭头函数  简化函数的定义
+            let f = f => f  //变量 实参  函数体
+
+            // 要是返回对象 需要在{}外面添加()或者{}
+            var a = function ge(name,mm){
+                return {a:name,b:mm}
+            }
+            var a = (name,mm)=>{
+                return {a:name,b:mm}
+            }
+            // 或者
+            var a =(name,mm)=>({a:name,b:mm})
+
+            // 箭头函数注意点
+            // 01.箭头函数不能当做构造函数
+            var Fun =function(){
+
+            }
+            var f1 =new Fun()
+
+            var Fun1 = ()=>{}
+            var aa =new Fun1()   //会报错
+
+            // 02.箭头函数没有原型对象 也就是没有prototype
+
+            // 03 不可以使用arguments对象，改对象在函数体内不存在  替代者rest参数 也就是...item   rest参数是实参 rest是个数组 ...加上变量名  
+
+            // 04.this指向  绑定的是定义者而不知调用者  由于箭头函数不绑定this，它会捕获其所在上下文的this的值 作为自己的this的值 
+            var str =123456
+            var fun8 ={
+                 str:4444,
+                funm:()=>{
+                    console.log(this.str) //这根时候funm的定义者是fun8(它在谁里面谁就是它的定义者) fun8的上下文就是window
+                }
+            }
+            fun8.funm()
+
+            // this指向是固定的  所以call()  apply()  bind() 改变不了它的指向
+
+            var a =[1,2,3,4]
+            var b =[4,88,96]
+            var c =[...a,...b]
+            //或者 a.push(...b)
+            //...运算符相当于将一个数组转为用逗号隔开的参数序列 
+
+            // 字符串转换数组
+            // es5
+            var a ="i love you"
+            var b =a.split(",")
+            // es6
+            var a ="i hate you"
+            var b =[...a]
+            
+            // 一级的数据深浅拷贝，可以是深拷贝
+                var a =[1,2]
+                var b =[...a]
+                b[0] =20
+            console.log(a) //[1,2]
+            console.log(b) //[20,2]
+
+            // 
+            var obj1 ={a:1}
+            var obj2 ={b:2} 
+            var obj3 ={...obj1,obj2}  // {a:1,obj2:{b:2}}
+
+
+    </script>
+</body>
+</html>

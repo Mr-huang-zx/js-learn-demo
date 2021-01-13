@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+    <!-- <link rel="stylesheet" type="text/css" href="http://developer.amap.com/Public/css/demo.Default.css" /> -->
+    <script src="./jquery/jquery-3.5.1.min.js"></script>
+    <script src="./js/public.js"></script>
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=d94035ac264f0cc5b293199360ca0e1e">
+
+    </script>
+    <style>
+        #container {
+            margin-left: auto;
+            margin-right: auto;
+            height: 550px;
+            width: 280px;
+        }
+        #showGDMap{
+            width: 300px;
+            height: 700px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="showGDMap"></div>
+
+    <div id="container"></div>
+
+
+    <script>
+        
+        GDMap(container,onComplete)
+        function onComplete(e) {
+            //e中包含详细信息
+            map = new AMap.Map('container', {
+                center: [e.position.lng, e.position.lat],
+                zoom: 15
+            });
+            getPositionByLonLats(e.position.lng,e.position.lat)
+        }
+
+        function onError(e) {
+            alert('获取位置出错')
+        }
+
+        // 公共方法
+        function returnAddress(addressInfor) { 
+            console.log(addressInfor)
+         }
+
+        //自动定位当前位置
+        //  debugger
+
+
+        // function getPositionByLonLats(lng, lat) {
+        //     // console.log("经度："+lng+"纬度"+lat);
+        //     var lnglatXY = [lng, lat]; // 地图上所标点的坐标
+        //     AMap.service('AMap.Geocoder', function () { // 回调函数
+        //         geocoder = new AMap.Geocoder({});
+        //         geocoder.getAddress(lnglatXY, function (status, result) {
+        //             if (status === 'complete' && result.info === 'OK') {
+        //                 // console.log(result.regeocode.formattedAddress);
+        //                 var address = result.regeocode.formattedAddress;
+        //                 console.log(address);
+        //             } else {}
+        //         });
+        //     });
+        // }
+    </script>
+</body>
+
+</html>

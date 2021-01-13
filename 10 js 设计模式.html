@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+        // 创建模式
+        // 1. 工厂模式:构建流水线(传入对应的参数生产对应的产品)
+        
+        
+        // 2.单例模式 :系统中被唯一使用，一个类只有一个实例(vuex)
+
+        class Store{
+            action(){
+                console.log("vue store")
+            }
+        }
+        // 定义一个静态方法，将方法挂在到class上面，无论相同的对象被new多少个，getInstance的方法只有一个
+        Store.getInstance = (function () { 
+            let instance;
+            return function(){
+                if(!instance){
+                    instance = new Store()  //相当于这里将Store实例化了 
+                }
+                return instance
+            }
+         })
+
+         let obj1 =Store.getInstance()
+         obj1.action()
+
+         let obj2=Store.getInstance()
+         obj2.action()
+
+        //  单例模式唯一的，每次获取的都是一个东西，所以两相等
+         console.log(obj1===obj2)  //true   存放的地址一样
+
+        //  3.适配器模式:将原本不适合的数据转换为适合的数据(计算属性)  将原本不适合的接口转换为适合的接口
+        // 适配器模式  
+        // 用来解决两个已有接口之间不匹配的问题，它并不需要考虑接口如何实现的，
+        // 也不用考虑将来该如何修改，适配器不需要修改已有接口，就可以使他们协同工作
+        // 常用于一些框架数据格式和后台返回的数据格式不符时 
+        var lists =[
+            {
+                "day": "周一",
+                "uv": 6300
+            },
+            {
+                "day": "周二",
+                "uv": 7100
+            },  {
+                "day": "周三",
+                "uv": 4300
+            },  {
+                "day": "周四",
+                "uv": 3300
+            },  {
+                "day": "周五",
+                "uv": 8300
+            },  {
+                "day": "周六",
+                "uv": 9300
+            }, {
+                "day": "周日",
+                "uv": 11300
+            }
+        ]
+        function xDatas(res){
+            return res.map(item=>{
+                return item.day
+            })
+        }
+        var a = xDatas(lists)
+        console.log(a)
+        // 得到新数组
+        // js适配器模式.html:47 (7) ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+    </script>
+</body>
+</html>

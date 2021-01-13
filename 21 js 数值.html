@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        // 数值的扩展
+        // es5
+        parseInt() //可解析一个字符串 并返回一个整数
+        parseFloat() //解析一个浮点数 带小数点
+        Math.ceil() //向上取整数
+        Math.floor() //向下取整数
+        Math.round() //四舍五入
+        // es6
+        Number.parseInt()
+        Number.isInteger()  //判断一个数值是否为整数 返回布尔 Number.isInteger(1) //true
+        Math.trunc() //去除小数点部分 只返回整数
+        Math.sign()  // 判断传入值是正数负数还是正数，非数值会先转成数值    会有5个返回值 是正数返回+1 负数返回-1 0返回0 -0返回-0 其他值返回NaN
+
+
+        // 数组的扩展
+        Array.of(1,2,3) //[1,2,3]   将一组值转换为数组
+
+        copyWithin()  //第一个参数 从第几个开始  第二个参数是替换的位置 第三位数是结束位置 不包括  负数倒着数
+        var a = [1,2,3,4,5] 
+        a.copyWithin(0,3)  //  [4,5,3,4,5]
+        var b =[5,6,9,8,6,5,9,8,60]
+        b.copyWithin(0,8) //[60,6,9,8,6,5,9,8,60]
+
+        // find()  数组满足条件的第一个
+
+        var a =[1,22,5,3,66]
+        var b =a.find(i=>i>2)  //返回的是22  
+
+        // findIndex()   和find() 区别   find()返回符合条件的第一个的值   fineIndex()  返回符合条件的第一个值的下标
+
+        // fill() 将固定值替换数组的元素 第一个参数要替换的值 第二个开始位置 第三个结束位置 不包括结束的
+        var a =["苹果","香蕉","牛奶","猕猴桃"]
+
+        var b =fill("你是猪",2,5)  // ["苹果","香蕉","你是猪","你是猪"]
+
+        // includes()
+        [1,2,3,4].includes(2) //true 乳如果有第二个参数 就表示从改位置开始数
+
+        // flat()  将嵌套的数组拉平，变成一维数组 要拉平几层，传参多少
+        [1,2,[5,8,[8,9]]].flat(2)  //[1,2,5,8,8,9]
+        //当不知道嵌套有多少级的时候 使用flat(Infinity) 
+
+
+        // 对象扩展
+        var a ="小白"
+
+        var obj ={
+            [a]:"男人",
+            ["age"]:20
+        }
+        obj   //{小白:"男人",age:20}
+
+        // 链判断运算符?
+        var obj={
+            obj2:{
+                obj3:{
+                    obj4:{
+                        a:20
+                    }
+                }
+            }
+        }
+        // 取值  ?运算符 浏览器不太支持，需要转码器
+        var a =obj?.obj2?.obj3?.obj4?.a||20;
+
+        // ////////////////////////////////////////////////////////////////
+
+        // set数据结构 js中数据结构 Array Object 新加两个Set类似数组,但是它的成员是唯一的   Map类似对象
+
+        var set =new Set()
+        // 添加方式
+        set.add(1).add(2)  //链式写法
+        //02 
+        var set =new Set([1,2,3,3,4,5,6,6,6])  //结果{1,2,3,4,5,6}
+
+        // 删除某个成员
+        add()  //添加
+        set.delete(5) //返回布尔值 如果成员中没有该值 返回false
+        set.clear() //清除所有成员
+        set.has()  //返回布尔值 判断该成员是否在该set中
+
+        // 数组去重
+        var arr =[1,2,2,3,3,1,4,4,3,5]
+        var set =new Set(arr)
+        // 类型转换
+        // 01扩展运算符
+        var s =[...set]
+        // 02.Array.from(set)
+
+        // es5数组去重
+        var arr =[1,2,2,3,3,1,4,4,3,5]
+        function f(){
+            var a =[];
+            for(var i =0;i<arr.length;i++){
+                if(a.indexOf(arr[i])==-1){
+                    a.push(arr[i])
+                }
+            }
+            return a
+        }
+        // 求两数组的差集
+        var arr1 =[1,2,2,3,6,5,8,9]
+        var arr2 =[1,2,3,4,5]
+        var fil  =arr1.filter(i=>{
+            return arr2.indexOf(i) ==-1
+        })
+
+        for(let v of arr1){
+            console.log(v)
+        }
+
+        ///////////////////////////////////////////////////////
+        // map 数据结构 类似于Object 键值对 Object的键只能是字符串  而map的键可以是其他的类型
+        var m =new Map()
+
+        // 添加属性01.
+        m.set("name","小白").set("age",20)
+        // 添加02 是个二维数组
+        let n =new Map([["name","白"],["age",22]])
+
+
+        var o ={"name":"白"}
+        m.set(o,"123")  //键是对象
+
+        // 获取属性的方法
+        m.get("name")
+
+        // 判断某键是否在这个mao中
+        m.has("age")  //返回布尔
+
+        // 删除
+        m.delete("age")
+
+        // 清除
+        m.clear()
+
+        // map遍历方法  for of
+        let n =new Map([["name","白"],["age",22]])
+        for(let [k,v] of n){
+            console.log(k)
+        }
+        // 获取键
+        for(let k of n.keys){
+            console.log(k)
+        }
+        // 获取值
+        for(let m of n.values){
+            console.log(m)
+        }
+
+        // map类型转换
+        // 01.对象转数组 es5
+        var a= {"name":"白"}
+        Object.keys(a) //将键转为数组
+        Object.values(a) //将值转为数组
+
+        // map转数组
+        let n =new Map([["name","白"],["age",22]])
+        var nArray = [...n.keys()]
+        // 转Object对象
+        // 01.
+        var obj ={}
+        for(let [k,v] of n){
+            obj[k] =v
+        }
+        // Object对象转map 01
+        var obj2 ={"name":"白"}
+        var mapm =new Map()
+        for(let a in obj2){
+            mapm.set(a,obj2[a])
+        }
+
+        // Object对象转map 02
+        let mb =new Map(Object.entries(obj2))
+
+        // for of 循环  可以有返回 return
+        // es6借鉴c++ java 引入的for of
+        // for of循环数组
+        var a =["Anym","LiMing"]
+        for(let k of a){
+            console.log(k)//获取的是值
+        }
+        for(let k in a){
+            console.log(k)//获取的是数组的值
+        }
+        // 看起来更简洁
+        // 如果for of想要拿到数组的下标
+        for(let [i,k] of a.entries()){   //a.entries() 打印的是[[0,Anym],[1,LiMing]]
+            console.log(k)//获取的是值
+            console.log(i) //获取下标
+        }
+
+        // for of循环set
+        var aa =new Set([1,2,3,5,6])
+        for(let k of aa){
+            console.log(k) //获取的是值
+        }
+
+        // Object对象不能直接使用for of 可以使用for in 也可以先把Object转换成map
+        var obj ={"name":"白"}
+        for(let [i,k] of Object.entries(obj)){
+            console.log(i)
+            console.log(k)
+        }
+
+
+        var yigou ="123"  //"123" 是字符串类型
+        var yigouzhu =123  //123是数字类型
+        yigou==yigouzhu  //返回true
+        yigou===yigouzhu  //返回false
+
+        var yiguoguo = true
+        var jinghanhan ='true'
+        yiguoguo===jinghanhan //返回的是true还是flase
+
+        // 父盒子
+        
+    </script>
+</body>
+</html>

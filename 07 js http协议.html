@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        `http协议`
+        `http协议，通讯只能由客户端发起  的单向协议 是一种不保存的状态，即无状态协议，堆数据不做持久化处理`
+        `options这个方法可以提前给服务器发请求，测试服务器功能是否正常运作`
+        `h5中的websocket 双向通讯协议`
+
+        //js请求默认是异步请求 
+
+        ajax('get', '192.168.0.')
+
+        function ajax() {
+            var xmlhttp = new XMLHttpRequest();
+
+            return {
+                request: function (type, url, data, success, erroe) {
+                    xmlhttp.open(type, url)
+                    if (type == 'POST') {
+
+                        xmlhttp.send(JSON.stringify(data))
+                        xmlhttp.onreadystatechange = function () {
+                            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) { //4表示请求完成
+                                console.log(xmlhttp.responseText)
+                                success(xmlhttp.responseText) //返回的参数
+
+                            }else {
+
+                            }   
+                        }
+                    }
+                }
+
+            }
+        }
+        var gets =ajax()
+        gets.request('POST',"192.168.100",data,function(res){})
+
+        function a(a){
+            console.log(a)
+        }
+        function b(){
+            return a.apply(this,[1])
+        }
+        b()
+        `这个apply中传的参数是传给被改变指向的函数，也就是apply前面的函数`
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <p onclick="getDate()">点击发送请求</p>
+    <script>
+         var list =
+            [
+                {
+                    name:"东北",
+                    child:[
+                        {
+                            name:"黑龙江",
+                            child:[
+                                {
+                                    name:"大庆",
+                                    child:[
+                                        {
+                                            name:'大兴安岭'
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name:"西北",
+                    child:[
+                        {
+                            name:"西藏",
+
+                        }
+                    ]
+                },
+                {
+                    name:"西南",
+                    child:[
+                        {
+                            name:"云南",
+
+                        }
+                    ]
+                },
+                {
+                    name:"东南",
+                    child:[
+                        {
+                            name:"福建",
+                            child:[
+                                {
+                                    name:"泉州",
+                                    child:[
+                                        {
+                                            name:"厦门",
+                                            child:[{name:"东土大唐"}]
+                                        }
+                                    ]
+                                },   
+                            ]
+                           
+                        }
+                    ]
+                },
+               
+            ]
+
+        // `fetch请求`
+
+        //    1  .   get
+        fetch("http://localhost:3000/data/query?name=jack&age=20").then(function(res){
+            return res.json()  //数据解析  
+        }).then(function (succe) { 
+            console.log(succe)
+         })
+        //     2   .    post
+
+        function getDate() {
+            fetch(
+                "http://localhost:3000/data/add",
+                {
+                    body:JSON.stringify(list),
+                    headers:{"content-type":"application/json"},
+                    method:"POST"
+                }).then(function (res) { 
+                return res.json()
+            }).then(function (getData) { 
+                console.log(getData)
+            })
+        }
+
+            //    3  .  formdata
+            var formdata =new FormData();
+            formdata.append("name","小白")
+            fetch("http://localhost:3000/data/form",{
+                body:formdata,
+                method:"POST"
+            }).then(function (res) { 
+                return res.json()
+             }).then(function(suc){
+                 console.log(suc)
+             })
+
+
+
+
+            //  xhr  和fetch两种请求方式区别  
+
+            // xhr 是回调的
+            // fetch是基于promise
+
+
+        // http协议  是基于Tcp协议(建立连接)
+
+        // 三次握手: 客户端给服务器端发送一个syn标志位，服务器端接收到syn后会返回一个ack(相当于回调机制),同时还有一个服务器端的syn，
+        //客户端接收服务器端发送的syn后会再次给服务器端发送一个ack,这样才算按成一次三次握手
+        // 1.客户端:"我要连接了" 
+        // 2.服务端:"可以，我准备好了"(服务器端传给ack应答给客户端)
+        // 3.客户端:"我发送了"
+
+        // 四次分手
+        // 连接后要断开连接
+        // 1.客户端通知服务端要断开连接
+        // 2.好，(得等)服务端有个close-wait(以防服务器端正在给客户端发信息)
+        // 3.服务器端传完数据后，向客户端发消息(数据发完了，可以断开连接了)
+        // 4.客户端(TIME-WAIT) 收到后告诉服务端我断开了 服务端也随之断开连接
+
+        // http是基于tcp协议  websocket是基于http 
+        // websocket下面 http下面tcp协议 
+        // https 传输数据是加密的
+        // https 
+
+
+
+    
+    </script>
+</body>
+</html>

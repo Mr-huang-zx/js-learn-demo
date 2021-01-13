@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #canvas{
+            background-image: url(./images/caoyuan.jpg);
+            background-size: 100% 100%;
+        }
+        #start{
+            color: red;
+            position: absolute;
+            right: 50%;
+            top: 0;
+        }
+        #stop{
+            color: red;
+            position: absolute;
+            right: 44%;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <canvas id="canvas" width="800" height="300">
+        
+    </canvas>
+    <button id="start">开始</button>
+        <button id="stop">停止</button>
+    
+
+    <script>
+        var start =document.getElementById('start') 
+        var stopCar =document.getElementById('stop')
+        var canvas =document.getElementById('canvas');
+        var txt =canvas.getContext('2d'); 
+        start.onclick =function(){play()} //点击开始
+        stopCar.onclick =function(){stop()} //点击暂停
+        var points =[{x:0,y:240},{x:400,y:240}] //行驶的点
+        var speed =2 //行驶速度
+        var timer,flag=false; //防止一直点击开始加速
+
+        var imgs =new Image() //预加载图片
+        imgs.src ='./images/car.png'
+
+        //点击开始
+        function play () { 
+            if(flag){return}
+            timer = setInterval(draw,100)
+            flag =true
+        }
+         //点击暂停
+        function stop() { 
+            
+            clearInterval(timer)
+            flag =false
+        }
+        //开始定时器
+        function draw() { 
+            txt.clearRect(0,0,canvas.width,canvas.height)  //清除正方形画布的内容
+            if(points[0].x<points[1].x){
+                points[0].x+=speed;
+            };
+            if(points[0].y<points[1].y){
+                points[0].y+=speed;
+            }
+            txt.drawImage(imgs,points[0].x,points[0].y,30,30) //上图
+
+            txt.strokeStyle ='red'
+        txt.lineTo(points[0].x,points[0].y);//画点
+        txt.stroke()
+        }
+        
+
+        
+    </script>
+</body> 
+</html>

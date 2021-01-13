@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+        // 01.匿名插槽
+        // 在子组件标签中
+        // <Tabbar >
+        //     <ul>
+                
+        //     </ul>
+        // </Tabbar>
+
+        // // 在子组件中
+        // <slot></slot>
+
+         // 02.具名插槽
+          // 在子组件标签中
+        // <Tabbar >
+        //     <ul slot="t1">
+                
+        //     </ul>
+        // </Tabbar>
+
+        // // 在子组件中
+        // <t1></t1>
+
+        // 03作用域插槽
+          // 在子组件标签中
+        // <Tabbar slot-scope="sonDatas">    sonDatas是子组件传过来的值
+        //     <ul slot="t1">
+                    // {{sonDatas}}
+        //     </ul>
+        // </Tabbar>
+
+        // // 在子组件中
+        // <slot :att="sonDatas"></slot>
+
+        // computed计算属性
+
+        // computed:{
+        //     total(){
+        //         return this.n*dd
+        //     }
+        // }
+        // 传参数得定义个fun
+        // total(2)
+        // computed:{
+        //     total(){
+        //         return function(aaa){
+        //             return this.n*dd+aaa
+        //         }
+        //     }
+        // }
+
+        // computed和methods的区别  
+        // computed有缓存 相同的数不会再请求 计算属性只要值发生变化就会渲染
+
+        // 计算属性的值不能被修改  total-1 错误
+
+        // watch监听属性 只监听data中的数据 所以不用this指向 只有监听的属性才会触发
+
+        watch:{
+            num(newValue,oldValue){  //num是监听的对象  前面的是新结果，后面那个是变化前的值
+
+            }
+        }
+        // 异步导致数据无法获取时
+        // 01.<child :datas="data" v-if="flag"></child>
+        // 请求完之后把flag变成true
+
+        // 02.
+        watch:{
+            datas(newData,oldData){
+                datas==newData 
+            }
+
+            // 监听对象
+            "obj.id"(newData,oldData){
+                // this.newData=oldData 
+            }
+
+            // 对象里任意数改变就触发
+            obj:{
+                    handler(newd,oldd){  //默认函数
+                        // 这样就只能获取改变后的值
+                    },
+                deep:true  //对象内部的属性监听 深度监听 
+            }
+
+            // $set  和 $delete
+
+            // 当动态添加data中新的数据时 (响应式数据)
+            // 当data中的对象或者数组中动态添加新的属性是 页面不会展示更新
+
+            data(){
+                return {
+                    obj:{
+                        id:1
+                    }
+                }
+            },
+            add(){
+                // this.obj.age=12  //渲染不成功
+                // 用到
+                this.$set(this.obj,age,12)  //第一个值是对象名 第二个要添加的属性名 第三个属性值
+                
+                delete this.obj.age //删了但是数据不重新渲染
+                this.$delete(this.obj,age)   //删除重新渲染
+            }
+        }
+    </script>
+
+</body>
+</html>

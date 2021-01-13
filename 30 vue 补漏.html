@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+
+        <div>
+            {{time | timeFilter}}
+        </div>
+
+        <!-- for循环循环对象的话 第一个数拿到的是值 第二个数拿到的是键 -->
+        <div v-for="(item,key) in obj" :key="item"></div>
+
+        <!-- for循环数字拿到的是 前面一个拿到的是值  后面一个拿到的是索引(下标)的值 -->
+        <div v-for ="(item,index) in n" :key="index"></div>
+
+        <!-- 添加:key原因 -->
+        <!-- 防止有缓存导致页面刷新获取不到最新数据 -->
+        <!-- v-model的修饰符 -->
+        <!-- .lazy  input失去焦点后才同步 -->
+        <input type="text" v-model.lazy="">
+
+        <!-- @click.prevent 阻止默认动作 -->
+    </div>
+
+
+    <script src="./js/vue.min.js"></script>
+    <script>
+        // 过滤器使用的地方 01. {{}} 中   02.v-bind 过滤器可以传参
+        // 全局过滤器
+        Vue.filter("FilterName",function (data) { 
+
+         })
+       var vm =new Vue({
+            el:"#app",
+            data:{
+                obj:{},
+                n:10
+            },
+             // 为什么有时间戳  秒的时间戳是10位数  毫秒13位数
+            // 因为可能跨国，各个国家时间不一样，所以用时间戳
+            methods:{},
+            
+            // 过滤器 (局部)
+            filters:{
+                timeFilter:function(tim,a){ //这里的tim是上面管道符左边的变量name
+
+                }
+            }
+       })
+    </script>
+</body>
+</html>

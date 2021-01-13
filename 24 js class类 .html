@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        // es5 定义类
+         function Fun1(a,b){
+             this.a =a;
+             this.b =b
+         }
+         Fun1.prototype.play =function(){
+             console.log(this.a)
+         }
+         var fun2 =new Fun1(1,2)
+         fun2.play()  //1
+
+        //  es6 定义class  class是个"function"
+        class Fun1{
+            constructor(x,y){
+                this.x =x;
+                this.y =y
+            }
+            play(){
+                return this.x
+            }
+        }
+        var fun2 =Fun1(1,2)
+
+        // class 中的constructor方法是类的默认方法，通过new命令生成对象实例时，自动调用该方法，一个类必须有constructor方法，如果没有显示定义
+        //  一个空的constructor方法会被默认添加
+
+        // 类的继承 
+        // es5继承
+        function Fun1(a,b){
+             this.a =1;
+             this.b =2
+         }
+        function Fun2(){
+            this.n =1
+            
+        }
+        Fun2.prototype =new Fun1()
+        var F2 =new Fun2()
+        F2.a
+
+        F2 instanceof Fun1  //用来判断Fun1是否在F2的原型链上  true
+
+        // es6类的继承
+        class A{
+            constructor(){
+                this.a =2
+            }
+        }
+        class B extends A{  //表示通过extends关键字继承A类所有的属性和方法
+            constructor(){   
+                super()  //   必须先写super()  子类必须写super() 代表父类的构造函数 
+                this.b =2
+
+            }
+        }
+        var aaa =new A()  // {a:2}
+        var bbb =new B()  // {b:2}
+        bbb.a
+
+        // class 类可以通过关键字extends关键字实现继承  要想实现继承 必须在子类(也就是继承者)的constructor中第一写入super() 否则拿不到
+        // super 是函数 虽然代表父类A的构造函数，但是返回的是子类B额实例 即super内部的this指的是B的实例
+        // 因此super相当于 A.prototype.constructor.call(this)  说明在super()  ()中可以写传入的参数
+        // super也可以作为对象直接获取父的属性和方法super()  super().fun()
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .wrap {
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            margin: auto;
+            width: 300px;
+            height: 200px;
+            box-shadow: 0 0 8px #999;
+            border-radius: 10px;
+        }
+        
+        .wrap .wrap-title {
+            text-align: center;
+            line-height: 30px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .wrap .wrap-show {
+            height: 140px;
+            text-align: center;
+            line-height: 140px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="wrap-title">获取验证码</div>
+        <!-- 验证码存放处 -->
+        <div class="wrap-show"></div>
+        <button>点击获取验证码</button>
+    </div>
+
+    <script>
+        function myFerCode() {
+            // 定义字符串，用来存放待命字符
+            var staChar = "AAA0123456789";
+            var str = ""; // 定义变量，存放随机截取拼接后的字符串
+            // 遍历操作，随机提取字符串
+            for (var i = 0; i < 6; i++) { // i<6此处的6任意修改，想拿到几位数的验证码就将此处修改为几
+                str += (staChar[parseInt(Math.random() * staChar.length)]);
+            }
+            return str;
+        }
+        var oBtn = document.querySelector("button"),
+            oShow = document.querySelector(".wrap-show");
+
+        oBtn.onclick = function() {
+            oShow.innerHTML = myFerCode();
+        }
+    </script>
+</body>
+
+</html>
