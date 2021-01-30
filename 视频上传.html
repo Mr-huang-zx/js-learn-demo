@@ -1,0 +1,76 @@
+<style>
+    .line {
+        width: 80%;
+        height: 1px;
+        border-top: solid RGB(85, 175, 230) 1px;
+        margin: 0 auto;
+    }
+</style>
+ 
+<form enctype="multipart/form-data">
+     <div class="class">
+         <div class="form-group col-md-12 col-xs-12">
+             <label class="col-md-3 col-xs-12">请输入课程名称</label>
+             <div class="col-md-9 col-xs-12">
+                  <input type="text" id="addClassName" class="form-control"    name="addClassName[]">
+                 </div>
+             </div>
+         <div class="form-group col-md-12 col-xs-12">
+             <label class="col-md-3 col-xs-12">请选择视频</label>
+             <div class="col-md-9 col-xs-12">
+                  <input onchange="selectVideos(this)" type="file" id="uploadVideos" name="file[]" multiple>
+                 </div>
+             </div>
+          
+         <div class="form-group col-md-12 col-xs-12">
+             <label class="col-md-3 col-xs-12">请输入第几节：</label>
+             <div class="col-md-9 col-xs-12">
+                  <input type="text" class="form-control" name="sort[]"    placeholder="第1节就输入1"    required value="">
+                 </div>
+             </div>
+         <div class="form-group col-md-12 col-xs-12">
+             <div class="line"></div>
+             </div>
+         </div>
+      
+     <div class="modal-footer" style="border-top:transparent;">
+         <button type="button" class="btn btn-info" onclick="addVideos()" style="margin-right: 700px">添加视频
+             </button>
+         <button type="button" onclick="addSubmit()" class="btn btn-primary">确认提交</button>
+         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+         </div>
+</form>
+ 
+<script>
+    var fileCountList = [];
+    // 添加视频按钮
+    function addVideos() {
+        let addDom =
+            "<div class='form-group col-md-12 col-xs-12'><label class='col-md-3 col-xs-12'>请输入课程名称</label><div class='col-md-9 col-xs-12'><input type='text' class='form-control' name='addClassName[]'> </div></div><div class='form-group col-md-12 col-xs-12'><label class='col-md-3 col-xs-12'>请选择视频</label><div class='col-md-9 col-xs-12'> <input type='file' name='file[]' multiple οnchange='selectVideos(this)'></div></div> <div class='form-group col-md-12 col-xs-12'><label class='col-md-3 col-xs-12'>请输入第几节：</label><div class='col-md-9 col-xs-12'><input type='text' class='form-control' name='sort[]' placeholder='第1节就输入1' required></div></div><div class='form-group col-md-12 col-xs-12'><div class='line'></div> </div>";
+        $('.class').append(addDom)
+    }
+    // 获取选择视频的个数(因为目前我写的是上传m3u8文件,所以需要用这个来告诉后端每一集有多少个ts文件,如果是上传mp4文件的话,我猜是不用说明这个的,不过我没有尝试过)
+    function selectVideos(obj) {
+        let fileCount = obj.files.length;
+        fileCountList.push(fileCount);
+    }
+    // 确认提交按钮
+    function addSubmit() {
+        // 在使用FormData提交数据的时候,需要用原生的js,不能使用jQuery,如果要使用jQuery获取的话,需要将jQuery获取到的对象转换成原生的DOM节点,具体的可以看我之前的一篇文章
+        // 这个时候如果使用console.log(formData)是看不到数据的,但是不要怀疑,按照下面的操作仍然是可以把数据提交上去的
+        let formData = new FormData(document.getElementById('uploadVideosForm'));
+        // 向formData中添加数据
+        formData.append('fileCountList', fileCountList);
+        $.ajax({
+            url: '上传视频的路径',
+            method: 'post',
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            data: formData,
+            success: function (data) {
+                console.log(data)
+            }
+        })
+    }
+</script>
