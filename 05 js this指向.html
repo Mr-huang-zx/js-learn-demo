@@ -66,6 +66,7 @@
         /////////////////////////////////////////////////////////////////////////////////////
         `改变this指向1.apply和call  2.bind`
         var a =10;
+        var aaa = 1000
         function f1(a,b){
             return this.aaa + a + b
         }
@@ -81,7 +82,7 @@
         fun2.action(1,2) // 103
 
         //用apply改变指向
-        fun2.action.apply(window,[1,2])  //13
+        fun2.action.apply(window,[1,2])  //NaN
         fun2.action.call(window,1,2)  //13 
         `调用者.apply(要指向的对象,[要传的参数])`
 

@@ -178,7 +178,7 @@
             setTimeout(()=>{resolve("p4")},5000)
         })
 
-        Promise.all([p3,p4]).then(([d3,d4])=>{console.log(d3,d4)})
+        Promise.race([p3,p4]).then(([d3,d4])=>{console.log(d3,d4)})
         // promise.race 谁最快执行就执行谁，只执行一个
     </script>
 </body>

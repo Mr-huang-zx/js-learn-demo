@@ -47,7 +47,7 @@
             let {x,y =10} ={x:10} // x = 10, y=10
 
             // 对象默认值生效的条件是，对象的属性值严格等于undefined
-            let {x=10,y=10} ={undefined,20} //x=10 y=20
+            let {x=10,y=10} ={undefined,y:20} //x=10 y=20
 
             // 又有别名又有默认值时
             let {x:n=1,y:m=10} ={x:1,y:10}  // n=1 m=10  取值用别名，赋值用匹配名
@@ -82,7 +82,7 @@
 
             let {x=0,y=0} ={} //相当于x y 的默认值都是0
 
-         `.1`   
+         `01`   
             function func({x,y} ={x:0,y:0}) { 
                 return [x,y]
             }
@@ -187,7 +187,7 @@
 
             // 02.箭头函数没有原型对象 也就是没有prototype
 
-            // 03 不可以使用arguments对象，改对象在函数体内不存在  替代者rest参数 也就是...item   rest参数是实参 rest是个数组 ...加上变量名  
+            // 03 不可以使用arguments对象，该对象在函数体内不存在  替代者rest参数 也就是...item   rest参数是实参 rest是个数组 ...加上变量名  
 
             // 04.this指向  绑定的是定义者而不知调用者  由于箭头函数不绑定this，它会捕获其所在上下文的this的值 作为自己的this的值 
             var str =123456
@@ -210,7 +210,7 @@
             // 字符串转换数组
             // es5
             var a ="i love you"
-            var b =a.split(",")
+            var b =a.split(" ")
             // es6
             var a ="i hate you"
             var b =[...a]
